@@ -74,6 +74,40 @@ def dashboard(request):
     summary = dataset_summary(df)
     metadata = load_metadata()
 
+    # Rekomendasi kos berdasarkan budget pengguna.
+    budget_input = request.GET.get("budget", "").strip()
+    budget = None
+    recommended_kos = []
+    budget_error = ""
+
+    if budget_input:
+        try:
+            budget = int(budget_input)
+
+            if budget < 100000 or budget > 10000000:
+                raise ValueError
+
+            filtered_kos = df[df["harga_rp"] <= budget].copy()
+            filtered_kos = filtered_kos.sort_values(
+                by=["harga_rp", "jarak_km"],
+                ascending=[True, True],
+            )
+
+            recommended_kos = [
+                {
+                    "nama": row.nama,
+                    "harga": int(row.harga_rp),
+                    "jarak": float(row.jarak_km),
+                    "rating": float(row.rating),
+                    "ac": row.ac,
+                }
+                for row in filtered_kos.itertuples()
+            ]
+
+        except (ValueError, TypeError):
+            budget = None
+            budget_error = "Masukkan budget antara Rp100.000 sampai Rp10.000.000."
+
     points = [
         {
             "nama": row.nama,
@@ -118,6 +152,11 @@ def dashboard(request):
         "latest_prediction": latest_prediction,
         "price_range": price_range,
         "similar_kos": similar_kos,
+        "budget": budget,
+        "budget_input": budget_input,
+        "recommended_kos": recommended_kos,
+        "recommended_count": len(recommended_kos),
+        "budget_error": budget_error,
         "history": PredictionHistory.objects.all()[:15],
         "total_predictions": PredictionHistory.objects.count(),
         "chart_data": {

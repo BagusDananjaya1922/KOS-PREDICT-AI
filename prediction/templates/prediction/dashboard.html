@@ -186,6 +186,7 @@
                 <span class="tab-indicator"></span>
                 <button class="tab-btn flex items-center gap-1.5 rounded-full px-4 py-2" data-tab="beranda"><svg class="ic"><use href="#i-home"/></svg>Beranda</button>
                 <button class="tab-btn flex items-center gap-1.5 rounded-full px-4 py-2" data-tab="cek-harga"><svg class="ic"><use href="#i-cash"/></svg>Cek Harga Kos</button>
+                <button class="tab-btn flex items-center gap-1.5 rounded-full px-4 py-2" data-tab="cari-kos"><svg class="ic"><use href="#i-search"/></svg>Cari Kos</button>
                 <button class="tab-btn flex items-center gap-1.5 rounded-full px-4 py-2" data-tab="grafik"><svg class="ic"><use href="#i-chart"/></svg>Grafik Pasar</button>
                 <button class="tab-btn flex items-center gap-1.5 rounded-full px-4 py-2" data-tab="riwayat"><svg class="ic"><use href="#i-clock"/></svg>Riwayat</button>
                 <button class="tab-btn flex items-center gap-1.5 rounded-full px-4 py-2" data-tab="tentang"><svg class="ic"><use href="#i-spark"/></svg>Tentang AI</button>
@@ -201,6 +202,7 @@
         <nav class="mob-nav mt-2 flex gap-1.5 overflow-x-auto pb-1 text-xs font-semibold text-stone-600 lg:hidden" role="tablist">
             <button class="tab-btn flex shrink-0 items-center gap-1.5 rounded-full border border-stone-200 bg-cream px-3.5 py-2" data-tab="beranda"><svg class="ic"><use href="#i-home"/></svg>Beranda</button>
             <button class="tab-btn flex shrink-0 items-center gap-1.5 rounded-full border border-stone-200 bg-cream px-3.5 py-2" data-tab="cek-harga"><svg class="ic"><use href="#i-cash"/></svg>Cek Harga</button>
+            <button class="tab-btn flex shrink-0 items-center gap-1.5 rounded-full border border-stone-200 bg-cream px-3.5 py-2" data-tab="cari-kos"><svg class="ic"><use href="#i-search"/></svg>Cari Kos</button>
             <button class="tab-btn flex shrink-0 items-center gap-1.5 rounded-full border border-stone-200 bg-cream px-3.5 py-2" data-tab="grafik"><svg class="ic"><use href="#i-chart"/></svg>Grafik</button>
             <button class="tab-btn flex shrink-0 items-center gap-1.5 rounded-full border border-stone-200 bg-cream px-3.5 py-2" data-tab="riwayat"><svg class="ic"><use href="#i-clock"/></svg>Riwayat</button>
             <button class="tab-btn flex shrink-0 items-center gap-1.5 rounded-full border border-stone-200 bg-cream px-3.5 py-2" data-tab="tentang"><svg class="ic"><use href="#i-spark"/></svg>Tentang AI</button>
@@ -314,6 +316,134 @@
                     <li class="relative flex gap-3"><span class="relative z-10 flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-ink text-xs font-extrabold text-white ring-4 ring-cream">2</span><span class="pt-0.5 text-stone-600">Tekan <b class="text-ink">Hitung Perkiraan Harga</b> — hasilnya langsung muncul.</span></li>
                     <li class="relative flex gap-3"><span class="relative z-10 flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-lav text-xs font-extrabold text-[#5B3FD6] ring-4 ring-cream">3</span><span class="pt-0.5 text-stone-600">Baca <b class="text-ink">penjelasan AI</b> agar tahu apakah harganya wajar.</span></li>
                 </ol>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===================================================== -->
+    <!-- TAB: CARI KOS BERDASARKAN BUDGET                       -->
+    <!-- ===================================================== -->
+    <section id="tab-cari-kos" class="tab-panel hidden space-y-6" data-panel="cari-kos">
+        <div>
+            <p class="eyebrow text-brand-600">Temukan tempat tinggal</p>
+            <h2 class="mt-2 text-2xl font-extrabold tracking-tight sm:text-3xl">
+                Temukan <span class="font-serif font-normal italic text-brand-600">Kos Impianmu</span>
+            </h2>
+            <p class="mt-2 text-sm text-stone-500">
+                Masukkan anggaran bulananmu dan temukan kos yang sesuai dari dataset KosGuss AI.
+            </p>
+        </div>
+
+        <div class="grid items-start gap-6 lg:grid-cols-12">
+            <form method="GET" action="{% url 'dashboard' %}#cari-kos"
+                  class="card space-y-5 p-6 lg:col-span-4">
+                <div>
+                    <label for="budget" class="mb-2 block text-sm font-bold">Budget maksimal per bulan</label>
+                    <div class="relative">
+                        <span class="absolute left-4 top-1/2 -translate-y-1/2 text-sm font-bold text-stone-500">Rp</span>
+                        <input
+                            id="budget"
+                            name="budget"
+                            type="number"
+                            min="100000"
+                            max="10000000"
+                            step="50000"
+                            value="{{ budget_input }}"
+                            placeholder="800000"
+                            required
+                            class="w-full rounded-xl border border-stone-200 bg-white py-3 pl-12 pr-4 text-sm font-semibold outline-none transition focus:border-brand-600 focus:ring-2 focus:ring-brand-600/10"
+                        >
+                    </div>
+                    <p class="mt-2 text-xs text-stone-500">
+                        Masukkan budget Rp100.000 sampai Rp10.000.000.
+                    </p>
+                </div>
+
+                <button type="submit"
+                        class="flex w-full items-center justify-center gap-2 rounded-xl bg-ink px-5 py-3 text-sm font-bold text-white transition hover:bg-brand-600">
+                    <svg class="ic"><use href="#i-search"/></svg>
+                    Cari Kos Sesuai Budget
+                </button>
+
+                {% if budget_error %}
+                    <p class="rounded-xl border border-rose-200 bg-rose-50 p-3 text-sm text-rose-700">
+                        {{ budget_error }}
+                    </p>
+                {% endif %}
+            </form>
+
+            <div class="space-y-4 lg:col-span-8">
+                {% if budget %}
+                    <div class="flex flex-wrap items-center justify-between gap-3">
+                        <div>
+                            <p class="text-sm font-bold">Hasil rekomendasi</p>
+                            <p class="mt-1 text-xs text-stone-500">
+                                Budget maksimal Rp{{ budget|floatformat:0 }}
+                            </p>
+                        </div>
+                        <span class="rounded-full bg-lime/30 px-4 py-2 text-xs font-bold text-ink">
+                            {{ recommended_count }} kos ditemukan
+                        </span>
+                    </div>
+
+                    {% if recommended_kos %}
+                        <div class="grid gap-4 sm:grid-cols-2">
+                            {% for kos in recommended_kos %}
+                                <article class="card card-hover space-y-4 p-5">
+                                    <div class="flex items-start justify-between gap-3">
+                                        <div>
+                                            <h3 class="font-extrabold">{{ kos.nama }}</h3>
+                                            <p class="mt-1 text-xs text-stone-500">Pilihan sesuai anggaran</p>
+                                        </div>
+                                        <span class="rounded-full bg-lime/30 px-3 py-1 text-xs font-bold text-ink">
+                                            Cocok
+                                        </span>
+                                    </div>
+
+                                    <div>
+                                        <p class="text-2xl font-extrabold tracking-tight text-brand-600">
+                                            Rp{{ kos.harga|floatformat:0 }}
+                                        </p>
+                                        <p class="text-xs text-stone-500">per bulan</p>
+                                    </div>
+
+                                    <div class="grid grid-cols-3 gap-2 border-t border-stone-100 pt-4 text-center">
+                                        <div>
+                                            <p class="text-sm font-bold">{{ kos.jarak }} km</p>
+                                            <p class="text-xs text-stone-500">Jarak</p>
+                                        </div>
+                                        <div>
+                                            <p class="text-sm font-bold">⭐ {{ kos.rating }}</p>
+                                            <p class="text-xs text-stone-500">Rating</p>
+                                        </div>
+                                        <div>
+                                            <p class="text-sm font-bold">{% if kos.ac == "ya" %}Ada{% else %}Tidak{% endif %}</p>
+                                            <p class="text-xs text-stone-500">AC</p>
+                                        </div>
+                                    </div>
+                                </article>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        <div class="card p-8 text-center">
+                            <p class="text-3xl">🔎</p>
+                            <h3 class="mt-3 font-bold">Belum ada kos yang sesuai</h3>
+                            <p class="mt-1 text-sm text-stone-500">
+                                Coba naikkan budget maksimal agar lebih banyak pilihan ditemukan.
+                            </p>
+                        </div>
+                    {% endif %}
+                {% else %}
+                    <div class="card flex min-h-64 flex-col items-center justify-center p-8 text-center">
+                        <div class="flex h-16 w-16 items-center justify-center rounded-2xl bg-lime/30 text-3xl">
+                            <svg class="ic" style="width:30px;height:30px"><use href="#i-search"/></svg>
+                        </div>
+                        <h3 class="mt-4 text-lg font-extrabold">Siap mencari kos?</h3>
+                        <p class="mt-2 max-w-md text-sm leading-relaxed text-stone-500">
+                            Masukkan budget maksimal di sebelah kiri. Kami akan mencarikan pilihan kos yang sesuai dari data yang tersedia.
+                        </p>
+                    </div>
+                {% endif %}
             </div>
         </div>
     </section>
@@ -886,7 +1016,7 @@
     }
 
     // ---------- Navigasi Tab ----------
-    const tabs = ['beranda', 'cek-harga', 'grafik', 'riwayat', 'tentang'];
+    const tabs = ['beranda', 'cek-harga', 'cari-kos', 'grafik', 'riwayat', 'tentang'];
     const deskNav = document.getElementById('deskNav');
     function moveIndicator(name) {
         const btn = deskNav.querySelector(`[data-tab="${name}"]`), ind = deskNav.querySelector('.tab-indicator');
