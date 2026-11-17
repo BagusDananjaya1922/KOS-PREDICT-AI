@@ -198,3 +198,52 @@ def api_insight(request):
         return JsonResponse({"ok": False, "error": str(error)}, status=503)
 
     return JsonResponse({"ok": True, **result})
+
+
+@require_POST
+def api_simulate(request):
+    latest = request.session.get("latest_prediction")
+
+    if not latest:
+        return JsonResponse(
+            {"ok": False, "error": "Buat prediksi awal terlebih dahulu."},
+            status=400,
+        )
+
+    try:
+        jarak_km = float(request.POST.get("jarak_km", ""))
+        rating = float(request.POST.get("rating", ""))
+        ac = request.POST.get("ac", "")
+
+        if not 0.1 <= jarak_km <= 20:
+            raise ValueError("Jarak harus antara 0,1 sampai 20 km.")
+        if not 0 <= rating <= 5:
+            raise ValueError("Rating harus antara 0 sampai 5.")
+        if ac not in ["ya", "tidak"]:
+            raise ValueError("Pilihan fasilitas AC tidak valid.")
+
+        simulated_price = predict_price(jarak_km, ac, rating)
+
+        original_price = int(latest["predicted_price"])
+        difference = simulated_price - original_price
+
+        return JsonResponse({
+            "ok": True,
+            "original_price": original_price,
+            "simulated_price": simulated_price,
+            "difference": difference,
+            "jarak_km": jarak_km,
+            "ac": ac,
+            "rating": rating,
+        })
+
+    except (ValueError, TypeError) as error:
+        return JsonResponse(
+            {"ok": False, "error": str(error) or "Input tidak valid."},
+            status=400,
+        )
+    except FileNotFoundError as error:
+        return JsonResponse(
+            {"ok": False, "error": str(error)},
+            status=503,
+        )
