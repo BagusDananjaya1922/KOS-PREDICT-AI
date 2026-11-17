@@ -1,6 +1,6 @@
 <div align="center">
 
-# 🏠 KosGuss AI
+# KosGuss AI
 
 **Prediksi harga sewa kos di Kota Madiun berbasis AI.**
 
