@@ -1,0 +1,26 @@
+{
+    "model_name": "Ridge Regression",
+    "features": [
+        "jarak_km",
+        "ac",
+        "rating"
+    ],
+    "target": "harga",
+    "currency": "IDR",
+    "price_unit_assumption": "Nilai harga pada CSV diasumsikan dalam ribuan rupiah per bulan.",
+    "dataset_rows": 30,
+    "training_rows": 24,
+    "testing_rows": 6,
+    "mae": 229361.20872684216,
+    "rmse": 261022.76634072667,
+    "r2": -5.09387290368686,
+    "cross_validation_mae": 294375.9695011306,
+    "baseline_dummy_mae": 282447.3684210526,
+    "model_candidates": {
+        "Huber Regressor (Robust)": 294694.9897797102,
+        "Ridge Regression": 294375.9695011306,
+        "Random Forest": 308443.0954600953,
+        "Gradient Boosting": 341366.6051296944,
+        "Linear Regression": 303349.37428497424
+    }
+}
