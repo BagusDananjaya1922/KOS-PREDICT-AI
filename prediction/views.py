@@ -11,7 +11,7 @@ from django.views.decorators.http import require_GET, require_POST
 
 from .models import PredictionHistory
 from .services.ai_insight import TOPICS, AIInsightError, generate_insight
-from .services.predictor import load_metadata, predict_price
+from .services.predictor import find_similar_kos, load_metadata, predict_price
 
 
 BASE_DIR = Path(__file__).resolve().parents[1]
@@ -87,6 +87,7 @@ def dashboard(request):
 
     latest_prediction = request.session.get("latest_prediction")
     price_range = None
+    similar_kos = []
     if latest_prediction:
         margin = metadata.get("mae") or latest_prediction["predicted_price"] * 0.1
         price_range = {
@@ -100,11 +101,23 @@ def dashboard(request):
             "lebih_mahal": diff > 0,
         }
 
+        similar_kos = find_similar_kos(
+            latest_prediction["jarak_km"],
+            latest_prediction["ac"],
+            latest_prediction["rating"],
+        )
+
+        for kos in similar_kos:
+            kos["selisih_harga"] = (
+                kos["harga"] - latest_prediction["predicted_price"]
+            )
+
     context = {
         "summary": summary,
         "metadata": metadata,
         "latest_prediction": latest_prediction,
         "price_range": price_range,
+        "similar_kos": similar_kos,
         "history": PredictionHistory.objects.all()[:15],
         "total_predictions": PredictionHistory.objects.count(),
         "chart_data": {
