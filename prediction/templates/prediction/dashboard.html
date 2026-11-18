@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KosGuss AI • Prediksi Kos Guss by AI</title>
+    <title>GusSearch Kost • Prediksi Kost by Ai</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -15,15 +15,15 @@
                 extend: {
                     fontFamily: { sans: ['"Plus Jakarta Sans"', 'sans-serif'], serif: ['"Instrument Serif"', 'serif'] },
                     colors: {
-                        brand: { 50: '#FFF4EF', 100: '#FFE4D8', 200: '#FFC9B3', 400: '#FF8A65', 500: '#FF6B4A', 600: '#F0532E', 700: '#C93A17' },
-                        ink: '#16140F', lime: '#D5F04C', cream: '#FBFAF6', sand: '#EEE9E0', lav: '#DDD4F6',
+                        brand: { 50: '#F9F0EB', 100: '#F0DDD2', 200: '#E1BBA7', 400: '#C98161', 500: '#B96843', 600: '#A55333', 700: '#80402B' },
+                        ink: '#241B17', lime: '#E1BBA7', cream: '#FBF7F2', sand: '#F0E8E1', lav: '#E8DDD5',
                     },
                 },
             },
         };
     </script>
     <style>
-        :root { --ink:#16140F; --cream:#FBFAF6; --sand:#EEE9E0; --line:#E4DED2; --lime:#D5F04C; --coral:#FF6B4A; }
+        :root { --ink:#241B17; --cream:#FBF7F2; --sand:#F0E8E1; --line:#E5D9D0; --lime:#E1BBA7; --coral:#B96843; }
         html { scroll-behavior: smooth; }
         body { background: var(--sand); }
 
@@ -34,8 +34,8 @@
                     mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, #000 0%, transparent 80%); }
         body::after { content:""; position:fixed; inset:0; z-index:-1; pointer-events:none;
             background:
-              radial-gradient(520px 520px at 100% -5%, rgba(255,201,179,.55), transparent 70%),
-              radial-gradient(520px 520px at -5% 105%, rgba(221,212,246,.7), transparent 70%); }
+              radial-gradient(520px 520px at 100% -5%, rgba(225,187,167,.40), transparent 70%),
+              radial-gradient(520px 520px at -5% 105%, rgba(232,221,213,.65), transparent 70%); }
 
         /* Ikon */
         .ic { width:1em; height:1em; fill:none; stroke:currentColor; stroke-width:1.8; stroke-linecap:round; stroke-linejoin:round; flex:none; }
@@ -75,27 +75,27 @@
         .flash { animation: slidein .45s cubic-bezier(.2,.8,.2,1) both; }
 
         /* AI: orb, shimmer, baris teks */
-        .orb { position:relative; width:40px; height:40px; border-radius:50%; overflow:hidden; flex:none; box-shadow:0 8px 20px -8px rgba(124,92,255,.75); }
-        .orb::before { content:""; position:absolute; inset:-30%; background: conic-gradient(from 0deg,#7C5CFF,#4CC9F0,#D5F04C,#FF9A6B,#7C5CFF); filter: blur(6px); animation: spin 8s linear infinite; }
+        .orb { position:relative; width:40px; height:40px; border-radius:50%; overflow:hidden; flex:none; box-shadow:0 8px 20px -8px rgba(169,91,60,.55); }
+        .orb::before { content:""; position:absolute; inset:-30%; background: conic-gradient(from 0deg,#80402B,#B96843,#E1BBA7,#F0DDD2,#80402B); filter: blur(6px); animation: spin 8s linear infinite; }
         .orb::after { content:""; position:absolute; inset:0; border-radius:50%; background: radial-gradient(circle at 32% 26%, rgba(255,255,255,.95), rgba(255,255,255,0) 42%); }
         .ai-card.is-loading .orb::before { animation-duration: 1.4s; }
         .ai-card.is-loading .ai-refresh svg { animation: spin 1s linear infinite; }
-        .shimmer { background: linear-gradient(90deg, rgba(124,92,255,.10) 0%, rgba(124,92,255,.26) 50%, rgba(124,92,255,.10) 100%); background-size: 200% 100%; animation: shimmer 1.4s linear infinite; }
+        .shimmer { background: linear-gradient(90deg, rgba(185,104,67,.08) 0%, rgba(185,104,67,.22) 50%, rgba(185,104,67,.08) 100%); background-size: 200% 100%; animation: shimmer 1.4s linear infinite; }
         .ai-line { opacity:0; animation: rise .55s cubic-bezier(.2,.8,.2,1) forwards; animation-delay: calc(var(--i, 0) * 90ms); }
 
         /* Slider */
         input[type=range] { -webkit-appearance:none; appearance:none; height:10px; border-radius:999px; outline:none; cursor:pointer;
             background: linear-gradient(to right, var(--fill, var(--coral)) 0, var(--fill, var(--coral)) var(--p, 30%), #E7E1D5 var(--p, 30%)); }
         input[type=range]::-webkit-slider-thumb { -webkit-appearance:none; width:22px; height:22px; border-radius:999px; background:#fff; border:5px solid var(--thumb, var(--ink));
-            box-shadow:0 3px 8px rgba(0,0,0,.25), 0 0 0 0 rgba(213,240,76,.7); transition: box-shadow .25s ease, transform .25s ease; }
+            box-shadow:0 3px 8px rgba(0,0,0,.25), 0 0 0 0 rgba(185,104,67,.35); transition: box-shadow .25s ease, transform .25s ease; }
         input[type=range]::-moz-range-thumb { width:12px; height:12px; border-radius:999px; background:#fff; border:5px solid var(--thumb, var(--ink));
             box-shadow:0 3px 8px rgba(0,0,0,.25); transition: box-shadow .25s ease, transform .25s ease; }
         input[type=range]::-moz-range-track { background: transparent; height:10px; }
-        input[type=range]:hover::-webkit-slider-thumb, input[type=range]:active::-webkit-slider-thumb { box-shadow:0 3px 8px rgba(0,0,0,.25), 0 0 0 7px rgba(213,240,76,.65); transform: scale(1.06); }
-        input[type=range]:hover::-moz-range-thumb, input[type=range]:active::-moz-range-thumb { box-shadow:0 3px 8px rgba(0,0,0,.25), 0 0 0 7px rgba(213,240,76,.65); }
-        input[type=range].amber { --fill:#F2B01E; --thumb:#E8A317; }
-        input[type=range].amber::-webkit-slider-thumb { border-color:#E8A317; }
-        input[type=range].amber::-moz-range-thumb { border-color:#E8A317; }
+        input[type=range]:hover::-webkit-slider-thumb, input[type=range]:active::-webkit-slider-thumb { box-shadow:0 3px 8px rgba(0,0,0,.25), 0 0 0 7px rgba(185,104,67,.28); transform: scale(1.06); }
+        input[type=range]:hover::-moz-range-thumb, input[type=range]:active::-moz-range-thumb { box-shadow:0 3px 8px rgba(0,0,0,.25), 0 0 0 7px rgba(185,104,67,.28); }
+        input[type=range].amber { --fill:var(--coral); --thumb:#A55333; }
+        input[type=range].amber::-webkit-slider-thumb { border-color:#A55333; }
+        input[type=range].amber::-moz-range-thumb { border-color:#A55333; }
         input[type=range].coral { --fill: var(--coral); }
 
         /* Pilihan AC */
@@ -117,7 +117,7 @@
 
         /* Rentang harga + penanda */
         .range { position:relative; height:12px; }
-        .range-track { position:absolute; inset:0; border-radius:999px; background: linear-gradient(90deg,#D5F04C,#FFD66B 55%,#FF8A65); }
+        .range-track { position:absolute; inset:0; border-radius:999px; background: linear-gradient(90deg,#E1BBA7,#C98161 55%,#A55333); }
         .mk { position:absolute; top:50%; left:0; width:16px; height:16px; border-radius:999px; transform: translate(-50%,-50%); transition: left 1.2s cubic-bezier(.2,.8,.2,1); }
         .mk-avg { background:#fff; border:4px solid var(--ink); box-shadow:0 4px 10px rgba(0,0,0,.35); z-index:2; }
         .mk-med { background:transparent; border:2.5px solid #fff; box-shadow:0 0 0 1.5px rgba(22,20,15,.5); z-index:1; }
@@ -138,7 +138,7 @@
         .dots { background-image: radial-gradient(rgba(255,255,255,.2) 1px, transparent 1px); background-size: 20px 20px;
                 -webkit-mask-image: linear-gradient(to bottom left,#000,transparent 70%); mask-image: linear-gradient(to bottom left,#000,transparent 70%); }
         .row-hover { transition: background .25s ease; }
-        .row-hover:hover { background:#F4F9D6; }
+        .row-hover:hover { background:#F6EEE9; }
 
         ::-webkit-scrollbar { width:6px; height:6px; }
         ::-webkit-scrollbar-thumb { background:#D8CFBF; border-radius:999px; }
@@ -146,6 +146,7 @@
             *, *::before, *::after { animation-duration:.01ms !important; animation-iteration-count:1 !important; transition-duration:.01ms !important; }
         }
     </style>
+    <link rel="stylesheet" href="{% static 'prediction/css/kosguss-theme.css' %}">
 </head>
 <body class="min-h-screen font-sans text-ink antialiased selection:bg-lime">
 
@@ -177,8 +178,8 @@
             <a href="#beranda" data-tab-link="beranda" class="flex items-center gap-3">
                 <div class="flex h-10 w-10 items-center justify-center rounded-full bg-ink text-lg text-lime shadow-lg shadow-black/20"><svg class="ic"><use href="#i-home"/></svg></div>
                 <div class="leading-tight">
-                    <p class="text-[15px] font-extrabold tracking-tight text-ink">KosGuss <span class="font-serif text-[19px] font-normal italic text-brand-600">AI</span></p>
-                    <p class="text-[11px] font-medium text-stone-500">Prediksi Kos Guss by AI</p>
+                    <p class="text-[15px] font-extrabold tracking-tight text-ink">GusSearch Kost</p>
+                    <p class="text-[11px] font-medium text-stone-500">Prediksi Kost by Ai</p>
                 </div>
             </a>
 
@@ -189,12 +190,12 @@
                 <button class="tab-btn flex items-center gap-1.5 rounded-full px-4 py-2" data-tab="cari-kos"><svg class="ic"><use href="#i-search"/></svg>Cari Kos</button>
                 <button class="tab-btn flex items-center gap-1.5 rounded-full px-4 py-2" data-tab="grafik"><svg class="ic"><use href="#i-chart"/></svg>Grafik Pasar</button>
                 <button class="tab-btn flex items-center gap-1.5 rounded-full px-4 py-2" data-tab="riwayat"><svg class="ic"><use href="#i-clock"/></svg>Riwayat</button>
-                <button class="tab-btn flex items-center gap-1.5 rounded-full px-4 py-2" data-tab="tentang"><svg class="ic"><use href="#i-spark"/></svg>Tentang AI</button>
+                <button class="tab-btn flex items-center gap-1.5 rounded-full px-4 py-2" data-tab="tentang"><svg class="ic"><use href="#i-spark"/></svg>Tentang Model</button>
             </nav>
 
-            <div class="flex items-center gap-2 rounded-full border border-[#D9E98A] bg-[#F1F9C9] px-3 py-1.5 text-[11px] font-semibold text-[#3F4A08]">
-                <span class="relative flex h-2 w-2"><span class="absolute inset-0 animate-ping rounded-full bg-[#7FA10A] opacity-70"></span><span class="relative h-2 w-2 rounded-full bg-[#5E7D00]"></span></span>
-                <span class="hidden sm:inline">AI Siap Dipakai</span><span class="sm:hidden">Online</span>
+            <div class="flex items-center gap-2 rounded-full border border-brand-200 bg-brand-50 px-3 py-1.5 text-[11px] font-semibold text-brand-700">
+                <span class="relative flex h-2 w-2"><span class="absolute inset-0 animate-ping rounded-full bg-brand-400 opacity-70"></span><span class="relative h-2 w-2 rounded-full bg-brand-600"></span></span>
+                <span class="hidden sm:inline">Prediksi Siap Digunakan</span><span class="sm:hidden">Online</span>
             </div>
         </div>
 
@@ -205,7 +206,7 @@
             <button class="tab-btn flex shrink-0 items-center gap-1.5 rounded-full border border-stone-200 bg-cream px-3.5 py-2" data-tab="cari-kos"><svg class="ic"><use href="#i-search"/></svg>Cari Kos</button>
             <button class="tab-btn flex shrink-0 items-center gap-1.5 rounded-full border border-stone-200 bg-cream px-3.5 py-2" data-tab="grafik"><svg class="ic"><use href="#i-chart"/></svg>Grafik</button>
             <button class="tab-btn flex shrink-0 items-center gap-1.5 rounded-full border border-stone-200 bg-cream px-3.5 py-2" data-tab="riwayat"><svg class="ic"><use href="#i-clock"/></svg>Riwayat</button>
-            <button class="tab-btn flex shrink-0 items-center gap-1.5 rounded-full border border-stone-200 bg-cream px-3.5 py-2" data-tab="tentang"><svg class="ic"><use href="#i-spark"/></svg>Tentang AI</button>
+            <button class="tab-btn flex shrink-0 items-center gap-1.5 rounded-full border border-stone-200 bg-cream px-3.5 py-2" data-tab="tentang"><svg class="ic"><use href="#i-spark"/></svg>Tentang Model</button>
         </nav>
     </div>
 </header>
@@ -214,7 +215,7 @@
 
     {% if messages %}
         {% for message in messages %}
-            <div class="flash flex items-center justify-between rounded-2xl border px-4 py-3 text-sm {% if message.tags == 'error' %}border-rose-200 bg-rose-50 text-rose-800{% else %}border-[#D9E98A] bg-[#F1F9C9] text-[#3F4A08]{% endif %}">
+            <div class="flash flex items-center justify-between rounded-2xl border px-4 py-3 text-sm {% if message.tags == 'error' %}border-rose-200 bg-rose-50 text-rose-800{% else %}border-brand-200 bg-brand-50 text-brand-700{% endif %}">
                 <span class="flex items-center gap-2">{% if message.tags == 'error' %}⚠️{% else %}<svg class="ic"><use href="#i-check"/></svg>{% endif %} {{ message }}</span>
                 <button onclick="this.parentElement.remove()" class="text-lg leading-none opacity-50 transition hover:opacity-100">&times;</button>
             </div>
@@ -230,7 +231,7 @@
         <div class="relative overflow-hidden rounded-[2rem] bg-ink p-6 text-white sm:p-10">
             <div class="dots pointer-events-none absolute inset-0"></div>
             <div class="pointer-events-none absolute -right-20 -top-24 h-80 w-80 rounded-full bg-brand-500/30 blur-3xl"></div>
-            <div class="pointer-events-none absolute -bottom-28 left-1/4 h-72 w-72 rounded-full bg-[#7C5CFF]/25 blur-3xl"></div>
+            <div class="pointer-events-none absolute -bottom-28 left-1/4 h-72 w-72 rounded-full bg-brand-500/20 blur-3xl"></div>
             <div class="relative grid items-center gap-8 lg:grid-cols-5">
                 <div class="lg:col-span-3">
                     <span class="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-3 py-1.5 text-[11px] font-semibold text-lime">
@@ -240,7 +241,7 @@
                         Cari tahu harga kos yang <span class="font-serif text-[1.18em] font-normal italic text-lime">wajar</span> sebelum kamu sewa.
                     </h1>
                     <p class="mt-4 max-w-xl text-sm leading-relaxed text-stone-300 sm:text-base">
-                        Masukkan jarak ke pusat kota, ada AC atau tidak, dan rating kos — KosGuss AI akan memperkirakan harga sewanya per bulan, lalu menjelaskan hasilnya dengan bahasa yang mudah dimengerti.
+                        GusSearch Kost membantu memperkirakan harga sewa bulanan di Kota Madiun berdasarkan jarak ke pusat kota, fasilitas AC, dan rating. Lihat kisaran harga yang wajar serta penjelasan singkat untuk membantu menentukan pilihan.
                     </p>
                     <div class="mt-7 flex flex-wrap gap-3">
                         <button data-tab-link="cek-harga" class="group inline-flex items-center gap-2.5 rounded-full bg-lime py-2 pl-5 pr-2 text-sm font-bold text-ink transition hover:brightness-105 active:scale-95">
@@ -290,9 +291,9 @@
                 <p class="mt-3 text-3xl font-extrabold tabular-nums tracking-tight"><span data-count="{{ summary.harga_tengah_median|unlocalize }}" data-prefix="Rp">Rp{{ summary.harga_tengah_median|floatformat:"0g" }}</span></p>
                 <p class="mt-1 text-xs text-stone-500">separuh kos di bawah harga ini</p>
             </div>
-            <div class="card card-hover p-5" style="background:linear-gradient(160deg,#E6DEFA,#F3EEFF)">
-                <p class="eyebrow" style="color:#6B5BA8">Rata-rata rating</p>
-                <p class="mt-3 flex items-center gap-2 text-3xl font-extrabold tabular-nums tracking-tight"><svg class="ic text-[#E8A317]" style="fill:#F2B01E;stroke:none"><use href="#i-star-f"/></svg><span data-count="{{ summary.rating_rata_rata|unlocalize }}" data-decimals="1">{{ summary.rating_rata_rata }}</span></p>
+            <div class="card card-hover p-5" style="background:linear-gradient(160deg,#F0E8E1,#FBF7F2)">
+                <p class="eyebrow text-brand-600">Rata-rata rating</p>
+                <p class="mt-3 flex items-center gap-2 text-3xl font-extrabold tabular-nums tracking-tight"><svg class="ic text-brand-500" style="fill:#B96843;stroke:none"><use href="#i-star-f"/></svg><span data-count="{{ summary.rating_rata_rata|unlocalize }}" data-decimals="1">{{ summary.rating_rata_rata }}</span></p>
                 <div class="bar mt-2.5"><i data-fill="{{ summary.rating_rata_rata|unlocalize }}" data-of="5"></i></div>
                 <p class="mt-1.5 text-xs text-stone-500">dari skala 5</p>
             </div>
@@ -311,10 +312,10 @@
             <div class="card p-6 lg:col-span-2">
                 <p class="text-sm font-bold">Cara pakai dalam 3 langkah</p>
                 <ol class="relative mt-5 space-y-5 text-sm">
-                    <span class="absolute left-[13px] top-3 bottom-3 w-px bg-gradient-to-b from-lime via-stone-300 to-[#DDD4F6]"></span>
+                    <span class="absolute left-[13px] top-3 bottom-3 w-px bg-gradient-to-b from-lime via-stone-300 to-brand-200"></span>
                     <li class="relative flex gap-3"><span class="relative z-10 flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-lime text-xs font-extrabold text-ink ring-4 ring-cream">1</span><span class="pt-0.5 text-stone-600">Buka tab <b class="text-ink">Cek Harga Kos</b>, isi jarak, AC, dan rating.</span></li>
                     <li class="relative flex gap-3"><span class="relative z-10 flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-ink text-xs font-extrabold text-white ring-4 ring-cream">2</span><span class="pt-0.5 text-stone-600">Tekan <b class="text-ink">Hitung Perkiraan Harga</b> — hasilnya langsung muncul.</span></li>
-                    <li class="relative flex gap-3"><span class="relative z-10 flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-lav text-xs font-extrabold text-[#5B3FD6] ring-4 ring-cream">3</span><span class="pt-0.5 text-stone-600">Baca <b class="text-ink">penjelasan AI</b> agar tahu apakah harganya wajar.</span></li>
+                    <li class="relative flex gap-3"><span class="relative z-10 flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-brand-50 text-xs font-extrabold text-brand-700 ring-4 ring-cream">3</span><span class="pt-0.5 text-stone-600">Baca <b class="text-ink">penjelasan otomatis</b> agar tahu apakah harganya wajar.</span></li>
                 </ol>
             </div>
         </div>
@@ -330,7 +331,7 @@
                 Temukan <span class="font-serif font-normal italic text-brand-600">Kos Impianmu</span>
             </h2>
             <p class="mt-2 text-sm text-stone-500">
-                Masukkan anggaran bulananmu dan temukan kos yang sesuai dari dataset KosGuss AI.
+                Masukkan anggaran bulananmu untuk menemukan kos yang sesuai dari data kos Kota Madiun.
             </p>
         </div>
 
@@ -344,12 +345,10 @@
                         <input
                             id="budget"
                             name="budget"
-                            type="number"
-                            min="100000"
-                            max="10000000"
-                            step="50000"
+                            type="text"
+                            inputmode="numeric"
                             value="{{ budget_input }}"
-                            placeholder="800000"
+                            placeholder="800.000"
                             required
                             class="w-full rounded-xl border border-stone-200 bg-white py-3 pl-12 pr-4 text-sm font-semibold outline-none transition focus:border-brand-600 focus:ring-2 focus:ring-brand-600/10"
                         >
@@ -421,6 +420,19 @@
                                             <p class="text-xs text-stone-500">AC</p>
                                         </div>
                                     </div>
+
+                                    <a
+                                        href="https://www.google.com/maps/search/?api=1&query={{ kos.nama|urlencode }}%20Madiun"
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        class="inline-flex items-center gap-2 text-sm font-semibold text-brand-600 transition hover:text-brand-800"
+                                    >
+                                        <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/>
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.5-7.5 11-7.5 11s-7.5-3.5-7.5-11a7.5 7.5 0 1 1 15 0Z"/>
+                                        </svg>
+                                        Buka Google Maps
+                                    </a>
                                 </article>
                             {% endfor %}
                         </div>
@@ -454,7 +466,7 @@
     <section id="tab-cek-harga" class="tab-panel hidden" data-panel="cek-harga">
         <div class="mb-6">
             <h2 class="text-2xl font-extrabold tracking-tight sm:text-3xl">Cek <span class="font-serif text-[1.15em] font-normal italic">Harga Kos</span></h2>
-            <p class="mt-1 text-sm text-stone-500">Isi ciri-ciri kos yang kamu incar, AI akan memperkirakan harga sewanya per bulan.</p>
+            <p class="mt-1 text-sm text-stone-500">Isi ciri-ciri kost yang kamu incar, lalu model akan memperkirakan harga sewanya per bulan.</p>
         </div>
 
         <div class="grid items-start gap-6 lg:grid-cols-12">
@@ -477,7 +489,7 @@
                 </div>
 
                 <div>
-                    <p class="flex items-center gap-2 text-sm font-bold"><svg class="ic text-sky-600"><use href="#i-snow"/></svg>Ada AC di kamar?</p>
+                    <p class="flex items-center gap-2 text-sm font-bold"><svg class="ic text-brand-600"><use href="#i-snow"/></svg>Ada AC di kamar?</p>
                     <div class="mt-3 grid grid-cols-2 gap-3">
                         <label class="choice cursor-pointer">
                             <input type="radio" name="ac" value="ya" class="sr-only" {% if not latest_prediction or latest_prediction.ac == "ya" %}checked{% endif %}>
@@ -500,15 +512,15 @@
 
                 <div>
                     <div class="flex items-center justify-between">
-                        <label for="ratingInput" class="flex items-center gap-2 text-sm font-bold"><svg class="ic text-amber-500"><use href="#i-star"/></svg>Rating kos</label>
-                        <span class="rounded-full bg-amber-50 px-3 py-1 text-xs font-extrabold tabular-nums text-amber-600"><span id="ratingDisplay">4.0</span> / 5</span>
+                        <label for="ratingInput" class="flex items-center gap-2 text-sm font-bold"><svg class="ic text-brand-500"><use href="#i-star"/></svg>Rating kos</label>
+                        <span class="rounded-full bg-brand-50 px-3 py-1 text-xs font-extrabold tabular-nums text-brand-600"><span id="ratingDisplay">4.0</span> / 5</span>
                     </div>
                     <p class="mt-1 text-xs text-stone-400">Nilai ulasan penghuni (misalnya dari Google Maps / Mamikos).</p>
                     <div class="relative mt-3 inline-block text-[22px] leading-none" aria-hidden="true">
                         <div class="flex text-stone-300">
                             <svg class="ic"><use href="#i-star-f"/></svg><svg class="ic"><use href="#i-star-f"/></svg><svg class="ic"><use href="#i-star-f"/></svg><svg class="ic"><use href="#i-star-f"/></svg><svg class="ic"><use href="#i-star-f"/></svg>
                         </div>
-                        <div id="starFill" class="absolute inset-0 overflow-hidden text-amber-400" style="width:80%;transition:width .35s cubic-bezier(.2,.8,.2,1)">
+                        <div id="starFill" class="absolute inset-0 overflow-hidden text-brand-400" style="width:80%;transition:width .35s cubic-bezier(.2,.8,.2,1)">
                             <div class="flex w-max">
                                 <svg class="ic"><use href="#i-star-f"/></svg><svg class="ic"><use href="#i-star-f"/></svg><svg class="ic"><use href="#i-star-f"/></svg><svg class="ic"><use href="#i-star-f"/></svg><svg class="ic"><use href="#i-star-f"/></svg>
                             </div>
@@ -517,7 +529,7 @@
                     <div class="mt-3 flex items-center gap-3">
                         <input type="range" id="ratingRange" min="0" max="5" step="0.1" value="{{ latest_prediction.rating|default_if_none:'4.0' }}" class="amber w-full" data-sync="rating">
                         <input type="number" name="rating" id="ratingInput" min="0" max="5" step="0.1" value="{{ latest_prediction.rating|default_if_none:'4.0' }}" required data-sync="rating"
-                               class="w-20 rounded-xl border border-stone-200 bg-white px-2 py-1.5 text-center text-sm font-bold tabular-nums transition focus:outline-none focus:ring-2 focus:ring-amber-400">
+                               class="w-20 rounded-xl border border-stone-200 bg-white px-2 py-1.5 text-center text-sm font-bold tabular-nums transition focus:outline-none focus:ring-2 focus:ring-brand-400">
                     </div>
                 </div>
 
@@ -560,11 +572,11 @@
             <!-- Hasil -->
             <div class="space-y-6 lg:col-span-7">
                 {% if latest_prediction %}
-                    <div class="relative overflow-hidden rounded-[1.75rem] p-7 text-ink shadow-xl shadow-orange-400/20" style="background:linear-gradient(135deg,#FFB27A 0%,#FFD66B 48%,#D5F04C 100%)">
+                    <div class="relative overflow-hidden rounded-[1.75rem] p-7 text-ink shadow-xl shadow-brand-700/15" style="background:linear-gradient(135deg,#E1BBA7 0%,#D39A7D 48%,#B96843 100%)">
                         <div class="pointer-events-none absolute -right-10 -top-12 h-52 w-52 rounded-full bg-white/40 blur-2xl"></div>
                         <div class="relative flex items-center justify-between">
                             <p class="text-xs font-bold uppercase tracking-wider text-ink/60">Perkiraan harga sewa</p>
-                            <span class="rounded-full bg-ink px-2.5 py-1 text-[10px] font-bold text-lime">Hasil AI</span>
+                            <span class="rounded-full bg-ink px-2.5 py-1 text-[10px] font-bold text-lime">Estimasi Model</span>
                         </div>
                         <p class="relative mt-2 text-4xl font-extrabold tabular-nums tracking-tight sm:text-5xl"><span data-count="{{ latest_prediction.predicted_price|unlocalize }}" data-prefix="Rp">Rp{{ latest_prediction.predicted_price|floatformat:"0g" }}</span><span class="text-lg font-semibold text-ink/60"> / bulan</span></p>
                         {% if price_range %}
@@ -607,7 +619,7 @@
                                                 </p>
                                             </div>
                                             {% if forloop.first %}
-                                                <span class="rounded-full bg-lime-100 px-3 py-1 text-xs font-bold text-green-800">Paling mirip</span>
+                                                <span class="rounded-full bg-lime-100 px-3 py-1 text-xs font-bold text-brand-700">Paling mirip</span>
                                             {% endif %}
                                         </div>
 
@@ -638,7 +650,7 @@
                             <span class="pulse-ring"></span><svg class="ic"><use href="#i-search"/></svg>
                         </div>
                         <p class="mt-5 text-base font-bold">Belum ada hasil</p>
-                        <p class="mt-1 max-w-sm text-sm text-stone-500">Isi formulir di sebelah kiri lalu tekan <b>Hitung Perkiraan Harga</b>. Hasil dan penjelasan AI akan muncul di sini.</p>
+                        <p class="mt-1 max-w-sm text-sm text-stone-500">Isi formulir di sebelah kiri lalu tekan <b>Hitung Perkiraan Harga</b>. Hasil dan penjelasannya akan muncul di sini.</p>
                     </div>
                 {% endif %}
             </div>
@@ -651,7 +663,7 @@
     <section id="tab-grafik" class="tab-panel hidden space-y-6" data-panel="grafik">
         <div>
             <h2 class="text-2xl font-extrabold tracking-tight sm:text-3xl">Grafik <span class="font-serif text-[1.15em] font-normal italic">Pasar Kos</span></h2>
-            <p class="mt-1 text-sm text-stone-500">Setiap grafik dilengkapi penjelasan AI supaya kamu langsung paham maksudnya.</p>
+            <p class="mt-1 text-sm text-stone-500">Setiap grafik dilengkapi penjelasan singkat supaya kamu langsung paham maksudnya.</p>
         </div>
 
         <div class="grid items-start gap-6 lg:grid-cols-2">
@@ -677,7 +689,7 @@
 
         <div class="grid items-start gap-6 lg:grid-cols-2">
             <div class="card p-6">
-                <span class="inline-flex rounded-full bg-amber-400 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-ink">Pertanyaan 3</span>
+                <span class="inline-flex rounded-full bg-brand-200 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-ink">Pertanyaan 3</span>
                 <h3 class="mt-3 text-lg font-bold">Rating tinggi = harga mahal?</h3>
                 <p class="text-xs text-stone-500">Hubungan antara rating ulasan dan harga sewa.</p>
                 <div class="mt-5 h-72"><canvas id="chartRating"></canvas></div>
@@ -695,7 +707,18 @@
                 <h2 class="text-2xl font-extrabold tracking-tight sm:text-3xl">Riwayat <span class="font-serif text-[1.15em] font-normal italic">Cek Harga</span></h2>
                 <p class="mt-1 text-sm text-stone-500">Daftar perkiraan harga yang pernah kamu hitung (15 terbaru).</p>
             </div>
-            <span class="rounded-full bg-ink px-3.5 py-1.5 text-xs font-semibold text-white shadow-sm">Total <span class="text-lime">{{ total_predictions }}</span> kali</span>
+            <div class="flex flex-wrap items-center gap-3">
+                <span class="rounded-full bg-ink px-3.5 py-1.5 text-xs font-semibold text-white shadow-sm">Total <span class="text-lime">{{ total_predictions }}</span> kali</span>
+                {% if total_predictions %}
+                    <form method="POST" action="{% url 'delete_history' %}#riwayat"
+                          onsubmit="return confirm('Hapus semua riwayat prediksi dari database? Tindakan ini tidak bisa dibatalkan.')">
+                        {% csrf_token %}
+                        <button type="submit" class="rounded-full border border-rose-200 bg-white px-4 py-2 text-xs font-bold text-rose-700 transition hover:bg-rose-50">
+                            Hapus semua riwayat
+                        </button>
+                    </form>
+                {% endif %}
+            </div>
         </div>
         <div class="card overflow-hidden">
             {% if history %}
@@ -713,7 +736,7 @@
                                         {% if item.ac == 'ya' %}<span class="inline-flex items-center gap-1.5 rounded-full bg-ink px-2.5 py-1 text-xs font-semibold text-white"><svg class="ic"><use href="#i-snow"/></svg>Ada AC</span>
                                         {% else %}<span class="inline-flex items-center gap-1.5 rounded-full bg-stone-200/80 px-2.5 py-1 text-xs font-semibold text-stone-700"><svg class="ic"><use href="#i-fan"/></svg>Tanpa AC</span>{% endif %}
                                     </td>
-                                    <td class="px-5 py-4"><span class="inline-flex items-center gap-1.5"><svg class="ic text-amber-500" style="fill:#F2B01E;stroke:none"><use href="#i-star-f"/></svg>{{ item.rating }}</span></td>
+                                    <td class="px-5 py-4"><span class="inline-flex items-center gap-1.5"><svg class="ic text-brand-500" style="fill:#B96843;stroke:none"><use href="#i-star-f"/></svg>{{ item.rating }}</span></td>
                                     <td class="px-5 py-4 text-right font-extrabold tabular-nums">Rp{{ item.predicted_price|floatformat:"0g" }}</td>
                                 </tr>
                             {% endfor %}
@@ -727,17 +750,17 @@
     </section>
 
     <!-- ===================================================== -->
-    <!-- TAB 5: TENTANG AI                                      -->
+    <!-- TAB 5: TENTANG MODEL                                   -->
     <!-- ===================================================== -->
     <section id="tab-tentang" class="tab-panel hidden space-y-6" data-panel="tentang">
         <div>
-            <h2 class="text-2xl font-extrabold tracking-tight sm:text-3xl">Tentang <span class="font-serif text-[1.15em] font-normal italic">AI di Balik KosGuss</span></h2>
+            <h2 class="text-2xl font-extrabold tracking-tight sm:text-3xl">Tentang <span class="font-serif text-[1.15em] font-normal italic">Model Prediksi</span></h2>
             <p class="mt-1 text-sm text-stone-500">Seberapa akurat perkiraannya? Berikut penjelasan jujurnya.</p>
         </div>
 
         <div class="stg grid grid-cols-2 gap-4 lg:grid-cols-4">
             <div class="card card-hover relative overflow-hidden p-5" style="background:var(--ink);border-color:var(--ink);color:#fff">
-                <div class="pointer-events-none absolute -right-8 -top-8 h-28 w-28 rounded-full bg-[#7C5CFF]/40 blur-2xl"></div>
+                <div class="pointer-events-none absolute -right-8 -top-8 h-28 w-28 rounded-full bg-brand-500/25 blur-2xl"></div>
                 <p class="eyebrow relative" style="color:#9C9484">Metode yang dipakai</p>
                 <p class="relative mt-3 text-lg font-extrabold leading-snug text-lime">{{ metadata.model_name|default:"-" }}</p>
                 <p class="relative mt-1 text-xs text-stone-400">rumus yang dipelajari dari data</p>
@@ -771,7 +794,7 @@
                     <div class="py-3"><dt class="font-bold">MAE (rata-rata meleset)</dt><dd class="mt-0.5 text-stone-500">Rata-rata selisih antara harga tebakan dan harga asli, dalam rupiah. Makin kecil makin bagus.</dd></div>
                     <div class="py-3"><dt class="font-bold">R² (skor ketepatan)</dt><dd class="mt-0.5 text-stone-500">Menunjukkan seberapa baik model menjelaskan naik-turunnya harga. Mendekati 1 berarti sangat baik.</dd></div>
                     <div class="py-3"><dt class="font-bold">Korelasi</dt><dd class="mt-0.5 text-stone-500">Angka −1 sampai 1 yang menunjukkan apakah dua hal bergerak searah (positif), berlawanan (negatif), atau tidak berhubungan (≈ 0).</dd></div>
-                    <div class="py-3 last:pb-0"><dt class="font-bold">Generated by AI</dt><dd class="mt-0.5 text-stone-500">Teks penjelasan ditulis otomatis oleh model bahasa AI (via Groq) berdasarkan angka di dashboard ini. AI bisa keliru, jadi tetap cek data aslinya.</dd></div>
+                    <div class="py-3 last:pb-0"><dt class="font-bold">Penjelasan berbantuan AI</dt><dd class="mt-0.5 text-stone-500">Penjelasan dibuat otomatis dengan bantuan AI (Groq) berdasarkan angka di dashboard ini. Hasilnya bisa keliru, jadi tetap periksa data aslinya.</dd></div>
                 </dl>
             </div>
         </div>
@@ -779,17 +802,38 @@
 </main>
 
 <footer class="mt-10 border-t border-[#E4DED2] py-7 text-center text-xs text-stone-400">
-    KosGuss AI — Prediksi Kos Guss by AI · Data kos Kota Madiun · Penjelasan teks <span class="font-semibold text-[#5B3FD6]">✨ Generated by AI (Groq)</span>
+    GusSearch - Prediksi Kost By Ai
 </footer>
 
 {{ chart_data|json_script:"chart-data" }}
 
 <script>
 (() => {
+    const budgetInput = document.getElementById('budget');
+    if (budgetInput) {
+        const formatBudget = (value) => {
+            const digits = value.replace(/\D/g, '');
+            return digits.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+        };
+        const formatBudgetInput = () => {
+            const cursor = budgetInput.selectionStart;
+            const digitsBeforeCursor = budgetInput.value.slice(0, cursor).replace(/\D/g, '').length;
+            budgetInput.value = formatBudget(budgetInput.value);
+            let nextCursor = 0, digitsSeen = 0;
+            while (nextCursor < budgetInput.value.length && digitsSeen < digitsBeforeCursor) {
+                if (/\d/.test(budgetInput.value[nextCursor])) digitsSeen++;
+                nextCursor++;
+            }
+            budgetInput.setSelectionRange(nextCursor, nextCursor);
+        };
+        budgetInput.addEventListener('input', formatBudgetInput);
+        budgetInput.value = formatBudget(budgetInput.value);
+    }
+
     const chartData = JSON.parse(document.getElementById('chart-data').textContent);
     const rupiah = (v) => 'Rp' + Math.round(v).toLocaleString('id-ID');
     const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const INK = '#16140F', CORAL = '#FF6B4A';
+    const INK = '#241B17', CORAL = '#B96843';
     Chart.defaults.font.family = '"Plus Jakarta Sans"';
     Chart.defaults.color = '#78716C';
 
@@ -894,7 +938,7 @@
             const d = `style="--i:${i++}"`;
             if (/^[-•*]\s+/.test(line)) {
                 if (!inList) { html += '<ul class="mt-3 space-y-2">'; inList = true; }
-                html += `<li class="ai-line flex gap-2.5" ${d}><span class="mt-[7px] h-1.5 w-1.5 shrink-0 rounded-full bg-[#7C5CFF]"></span><span>${clean.replace(/^[-•*]\s+/, '')}</span></li>`;
+                html += `<li class="ai-line flex gap-2.5" ${d}><span class="mt-[7px] h-1.5 w-1.5 shrink-0 rounded-full bg-brand-500"></span><span>${clean.replace(/^[-•*]\s+/, '')}</span></li>`;
             } else {
                 if (inList) { html += '</ul>'; inList = false; }
                 html += `<p class="ai-line mt-2.5 first:mt-0" ${d}>${clean}</p>`;
@@ -908,7 +952,7 @@
         const meta = card.querySelector('.ai-meta');
         card.classList.add('is-loading');
         body.innerHTML = '<div class="space-y-2.5"><div class="shimmer h-3 w-11/12 rounded-full"></div><div class="shimmer h-3 w-9/12 rounded-full"></div><div class="shimmer h-3 w-10/12 rounded-full"></div></div>';
-        meta.textContent = 'AI sedang menganalisis data...';
+        meta.textContent = 'Sedang menyiapkan penjelasan...';
         try {
             const res = await fetch(`{% url 'api_insight' %}?topik=${card.dataset.topik}${refresh ? '&refresh=1' : ''}`);
             const data = await res.json();
@@ -917,7 +961,7 @@
             meta.textContent = `Model ${data.model} · ${data.generated_at}${data.cached ? ' · tersimpan' : ''}`;
         } catch (err) {
             body.innerHTML = `<p class="rounded-xl bg-rose-50 px-3 py-2 text-xs text-rose-700">⚠️ ${escapeHtml(err.message)}</p>`;
-            meta.textContent = 'AI belum bisa dihubungi';
+            meta.textContent = 'Penjelasan belum bisa dimuat';
         }
         card.classList.remove('is-loading');
         card.dataset.loaded = '1';
@@ -970,13 +1014,13 @@
 
     // ---------- Grafik ----------
     const tooltip = { backgroundColor: INK, padding: 12, cornerRadius: 14, titleFont: { weight: 700 }, boxPadding: 4 };
-    const gridStyle = { color: 'rgba(22,20,15,.07)', borderDash: [4, 4] };
+    const gridStyle = { color: 'rgba(36,27,23,.07)', borderDash: [4, 4] };
     const yRupiah = { grid: gridStyle, border: { display: false }, ticks: { callback: (v) => 'Rp' + v / 1000 + 'rb' } };
     let chartsReady = false;
 
     function scatterSets(xKey) {
         const make = (ac, label, color) => ({
-            label, backgroundColor: color, borderColor: '#FBFAF6', borderWidth: 2, pointRadius: 6, pointHoverRadius: 9, pointHoverBorderWidth: 3,
+            label, backgroundColor: color, borderColor: '#FBF7F2', borderWidth: 2, pointRadius: 6, pointHoverRadius: 9, pointHoverBorderWidth: 3,
             data: chartData.points.filter((p) => p.ac === ac).map((p) => ({ x: p[xKey], y: p.harga, nama: p.nama })),
         });
         return [make('ya', 'Ada AC', INK), make('tidak', 'Tanpa AC', CORAL)];
@@ -1053,5 +1097,6 @@
     showTab(location.hash.slice(1) || 'beranda', false);
 })();
 </script>
+<script src="{% static 'prediction/js/kosguss-fx.js' %}" defer></script>
 </body>
 </html>

@@ -18,8 +18,8 @@ class AIInsightError(Exception):
 
 
 SYSTEM_PROMPT = (
-    "Kamu adalah asisten analis properti untuk aplikasi 'KosGuss AI' "
-    "(Prediksi Kos Guss by AI) di Kota Madiun. Jelaskan data kepada orang awam "
+    "Kamu adalah asisten analis properti untuk aplikasi 'GusSearch Kost' "
+    "(Prediksi Kost by Ai) di Kota Madiun. Jelaskan data kepada orang awam "
     "(mahasiswa / pencari kos) dalam Bahasa Indonesia yang santai, jelas, dan jujur. "
     "Aturan: pakai HANYA angka dari data yang diberikan, jangan mengarang. "
     "Tulis harga dalam format Rupiah (contoh: Rp1.050.000). "
@@ -97,7 +97,7 @@ def generate_insight(topik, context, refresh=False):
         headers={
             "Authorization": f"Bearer {api_key}",
             "Content-Type": "application/json",
-            "User-Agent": "KosGussAI/1.0",
+            "User-Agent": "GusSearchKost/1.0",
         },
         method="POST",
     )

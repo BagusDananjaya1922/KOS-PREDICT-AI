@@ -69,6 +69,20 @@ def dataset_summary(df):
     }
 
 
+def _parse_budget(value):
+    if not value or any(char not in "0123456789. " for char in value):
+        raise ValueError
+
+    digits = value.replace(".", "").replace(" ", "")
+    if not digits:
+        raise ValueError
+
+    budget = int(digits)
+    if budget < 100000 or budget > 10000000:
+        raise ValueError
+    return budget
+
+
 def dashboard(request):
     df = load_dataset()
     summary = dataset_summary(df)
@@ -82,10 +96,7 @@ def dashboard(request):
 
     if budget_input:
         try:
-            budget = int(budget_input)
-
-            if budget < 100000 or budget > 10000000:
-                raise ValueError
+            budget = _parse_budget(budget_input)
 
             filtered_kos = df[df["harga_rp"] <= budget].copy()
             filtered_kos = filtered_kos.sort_values(
@@ -200,6 +211,16 @@ def predict(request):
         messages.error(request, str(error))
 
     return redirect(reverse("dashboard") + "#cek-harga")
+
+
+@require_POST
+def delete_history(request):
+    deleted_count, _ = PredictionHistory.objects.all().delete()
+    if deleted_count:
+        messages.success(request, f"{deleted_count} riwayat prediksi berhasil dihapus.")
+    else:
+        messages.info(request, "Tidak ada riwayat prediksi untuk dihapus.")
+    return redirect(reverse("dashboard") + "#riwayat")
 
 
 @require_GET
