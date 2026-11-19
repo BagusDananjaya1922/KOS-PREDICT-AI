@@ -3,210 +3,69 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GusSearch Kost • Prediksi Kost by Ai</title>
+    <title>GusSearch - Prediksi Kost By Ai • Prediksi Harga Kos Madiun</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: { sans: ['"Plus Jakarta Sans"', 'sans-serif'], serif: ['"Instrument Serif"', 'serif'] },
-                    colors: {
-                        brand: { 50: '#F9F0EB', 100: '#F0DDD2', 200: '#E1BBA7', 400: '#C98161', 500: '#B96843', 600: '#A55333', 700: '#80402B' },
-                        ink: '#241B17', lime: '#E1BBA7', cream: '#FBF7F2', sand: '#F0E8E1', lav: '#E8DDD5',
-                    },
-                },
-            },
-        };
+        tailwind.config = { theme: { extend: {
+            fontFamily: { sans: ['Inter', 'system-ui', 'sans-serif'] },
+            colors: { ink: '#111827', muted: '#64748B', line: '#E2E8F0', cloud: '#F8FAFC', surface: '#F1F5F9',
+                      brand: { DEFAULT: '#0D9488', dark: '#0F766E', soft: '#F0FDFA' } },
+        } } };
     </script>
-    <style>
-        :root { --ink:#241B17; --cream:#FBF7F2; --sand:#F0E8E1; --line:#E5D9D0; --lime:#E1BBA7; --coral:#B96843; }
-        html { scroll-behavior: smooth; }
-        body { background: var(--sand); }
-
-        /* Latar: grid titik halus + cahaya lembut (bukan blob generik) */
-        body::before { content:""; position:fixed; inset:0; z-index:-2;
-            background-image: radial-gradient(#cdc5b5 1px, transparent 1px); background-size: 24px 24px; opacity:.6;
-            -webkit-mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, #000 0%, transparent 80%);
-                    mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, #000 0%, transparent 80%); }
-        body::after { content:""; position:fixed; inset:0; z-index:-1; pointer-events:none;
-            background:
-              radial-gradient(520px 520px at 100% -5%, rgba(225,187,167,.40), transparent 70%),
-              radial-gradient(520px 520px at -5% 105%, rgba(232,221,213,.65), transparent 70%); }
-
-        /* Ikon */
-        .ic { width:1em; height:1em; fill:none; stroke:currentColor; stroke-width:1.8; stroke-linecap:round; stroke-linejoin:round; flex:none; }
-
-        /* Kartu */
-        .card { background: var(--cream); border:1px solid var(--line); border-radius:1.75rem;
-                box-shadow: 0 1px 0 rgba(255,255,255,.9) inset, 0 14px 34px -20px rgba(60,40,20,.22);
-                transition: transform .35s cubic-bezier(.2,.8,.2,1), box-shadow .35s ease; }
-        .card-hover:hover { transform: translateY(-3px); box-shadow: 0 1px 0 rgba(255,255,255,.9) inset, 0 22px 40px -22px rgba(60,40,20,.32); }
-        .eyebrow { font-size:11px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:#8A8272; }
-
-        /* Navbar */
-        .nav-shell { transition: box-shadow .3s ease, background .3s ease; }
-        .nav-shell.is-scrolled { box-shadow: 0 18px 40px -22px rgba(40,28,10,.35); }
-        .tab-indicator { position:absolute; top:4px; bottom:4px; left:0; width:0; border-radius:999px; background:var(--ink);
-            transition: transform .5s cubic-bezier(.3,.9,.3,1), width .5s cubic-bezier(.3,.9,.3,1); box-shadow:0 8px 18px -8px rgba(22,20,15,.55); }
-        .desk-nav .tab-btn { position:relative; z-index:1; transition: color .3s ease; }
-        .desk-nav .tab-btn[aria-selected="true"] { color:#fff; }
-        .mob-nav .tab-btn { transition: all .3s ease; }
-        .mob-nav .tab-btn[aria-selected="true"] { background:var(--ink); color:#fff; border-color:var(--ink); }
-        .mob-nav { scrollbar-width: none; } .mob-nav::-webkit-scrollbar { display:none; }
-
-        /* Animasi masuk */
-        @keyframes rise { from { opacity:0; transform: translateY(16px); } to { opacity:1; transform:none; } }
-        @keyframes spin { to { transform: rotate(360deg); } }
-        @keyframes floaty { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
-        @keyframes ping2 { 0% { transform: scale(.6); opacity:.7; } 100% { transform: scale(1.6); opacity:0; } }
-        @keyframes shimmer { from { background-position: -200% 0; } to { background-position: 200% 0; } }
-        @keyframes slidein { from { opacity:0; transform: translateY(-8px) scale(.98); } to { opacity:1; transform:none; } }
-        .tab-panel > * { animation: rise .65s cubic-bezier(.2,.8,.2,1) both; }
-        .tab-panel > *:nth-child(2) { animation-delay:.07s; } .tab-panel > *:nth-child(3) { animation-delay:.14s; }
-        .tab-panel > *:nth-child(4) { animation-delay:.21s; } .tab-panel > *:nth-child(5) { animation-delay:.28s; }
-        .stg > * { animation: rise .6s cubic-bezier(.2,.8,.2,1) both; }
-        .stg > *:nth-child(1) { animation-delay:.12s; } .stg > *:nth-child(2) { animation-delay:.2s; }
-        .stg > *:nth-child(3) { animation-delay:.28s; } .stg > *:nth-child(4) { animation-delay:.36s; }
-        .float-y { animation: floaty 7s ease-in-out infinite; }
-        .flash { animation: slidein .45s cubic-bezier(.2,.8,.2,1) both; }
-
-        /* AI: orb, shimmer, baris teks */
-        .orb { position:relative; width:40px; height:40px; border-radius:50%; overflow:hidden; flex:none; box-shadow:0 8px 20px -8px rgba(169,91,60,.55); }
-        .orb::before { content:""; position:absolute; inset:-30%; background: conic-gradient(from 0deg,#80402B,#B96843,#E1BBA7,#F0DDD2,#80402B); filter: blur(6px); animation: spin 8s linear infinite; }
-        .orb::after { content:""; position:absolute; inset:0; border-radius:50%; background: radial-gradient(circle at 32% 26%, rgba(255,255,255,.95), rgba(255,255,255,0) 42%); }
-        .ai-card.is-loading .orb::before { animation-duration: 1.4s; }
-        .ai-card.is-loading .ai-refresh svg { animation: spin 1s linear infinite; }
-        .shimmer { background: linear-gradient(90deg, rgba(185,104,67,.08) 0%, rgba(185,104,67,.22) 50%, rgba(185,104,67,.08) 100%); background-size: 200% 100%; animation: shimmer 1.4s linear infinite; }
-        .ai-line { opacity:0; animation: rise .55s cubic-bezier(.2,.8,.2,1) forwards; animation-delay: calc(var(--i, 0) * 90ms); }
-
-        /* Slider */
-        input[type=range] { -webkit-appearance:none; appearance:none; height:10px; border-radius:999px; outline:none; cursor:pointer;
-            background: linear-gradient(to right, var(--fill, var(--coral)) 0, var(--fill, var(--coral)) var(--p, 30%), #E7E1D5 var(--p, 30%)); }
-        input[type=range]::-webkit-slider-thumb { -webkit-appearance:none; width:22px; height:22px; border-radius:999px; background:#fff; border:5px solid var(--thumb, var(--ink));
-            box-shadow:0 3px 8px rgba(0,0,0,.25), 0 0 0 0 rgba(185,104,67,.35); transition: box-shadow .25s ease, transform .25s ease; }
-        input[type=range]::-moz-range-thumb { width:12px; height:12px; border-radius:999px; background:#fff; border:5px solid var(--thumb, var(--ink));
-            box-shadow:0 3px 8px rgba(0,0,0,.25); transition: box-shadow .25s ease, transform .25s ease; }
-        input[type=range]::-moz-range-track { background: transparent; height:10px; }
-        input[type=range]:hover::-webkit-slider-thumb, input[type=range]:active::-webkit-slider-thumb { box-shadow:0 3px 8px rgba(0,0,0,.25), 0 0 0 7px rgba(185,104,67,.28); transform: scale(1.06); }
-        input[type=range]:hover::-moz-range-thumb, input[type=range]:active::-moz-range-thumb { box-shadow:0 3px 8px rgba(0,0,0,.25), 0 0 0 7px rgba(185,104,67,.28); }
-        input[type=range].amber { --fill:var(--coral); --thumb:#A55333; }
-        input[type=range].amber::-webkit-slider-thumb { border-color:#A55333; }
-        input[type=range].amber::-moz-range-thumb { border-color:#A55333; }
-        input[type=range].coral { --fill: var(--coral); }
-
-        /* Pilihan AC */
-        .choice-box { border:1.5px solid var(--line); background:#fff; border-radius:1.25rem; transition: all .3s cubic-bezier(.2,.8,.2,1); position:relative; }
-        .choice:hover .choice-box { border-color:#cfc6b4; transform: translateY(-2px); }
-        .choice input:checked + .choice-box { background: var(--lime); border-color: var(--ink); box-shadow: 0 14px 26px -16px rgba(22,20,15,.65); }
-        .choice input:focus-visible + .choice-box { outline:2px solid var(--ink); outline-offset:2px; }
-        .choice .chk { opacity:0; transform: scale(.4); transition: all .3s cubic-bezier(.3,1.6,.5,1); }
-        .choice input:checked + .choice-box .chk { opacity:1; transform: scale(1); }
-
-        /* Tombol */
-        .btn-ink { display:flex; width:100%; align-items:center; justify-content:space-between; gap:12px; border-radius:999px; background:var(--ink); color:#fff;
-            padding:8px 8px 8px 24px; font-size:14px; font-weight:700; transition: transform .25s ease, box-shadow .25s ease; box-shadow:0 14px 26px -14px rgba(22,20,15,.7); }
-        .btn-ink:hover { box-shadow:0 18px 30px -14px rgba(22,20,15,.8); }
-        .btn-ink:active { transform: scale(.98); }
-        .btn-arrow { display:flex; height:44px; width:44px; align-items:center; justify-content:center; border-radius:999px; background:var(--lime); color:var(--ink); font-size:18px; transition: transform .3s cubic-bezier(.3,1.4,.5,1); }
-        .btn-ink:hover .btn-arrow { transform: translateX(3px) rotate(-8deg); }
-        .btn-ink.is-busy .btn-arrow { animation: spin 1s linear infinite; }
-
-        /* Rentang harga + penanda */
-        .range { position:relative; height:12px; }
-        .range-track { position:absolute; inset:0; border-radius:999px; background: linear-gradient(90deg,#E1BBA7,#C98161 55%,#A55333); }
-        .mk { position:absolute; top:50%; left:0; width:16px; height:16px; border-radius:999px; transform: translate(-50%,-50%); transition: left 1.2s cubic-bezier(.2,.8,.2,1); }
-        .mk-avg { background:#fff; border:4px solid var(--ink); box-shadow:0 4px 10px rgba(0,0,0,.35); z-index:2; }
-        .mk-med { background:transparent; border:2.5px solid #fff; box-shadow:0 0 0 1.5px rgba(22,20,15,.5); z-index:1; }
-        .range.on-light .mk-med { border-color: var(--ink); box-shadow:none; }
-        .bar { height:6px; border-radius:999px; background: rgba(22,20,15,.08); overflow:hidden; }
-        .bar > i { display:block; height:100%; width:0; border-radius:999px; background: var(--ink); transition: width 1.2s cubic-bezier(.2,.8,.2,1); }
-        .split { display:flex; height:6px; border-radius:999px; background:#E2DACB; overflow:hidden; }
-        .split > i { display:block; height:100%; width:0; background: var(--ink); transition: width 1.2s cubic-bezier(.2,.8,.2,1); }
-
-        /* Gauge R² */
-        @property --pct { syntax:'<number>'; inherits:false; initial-value:0; }
-        .gauge { --pct:0; position:relative; width:84px; height:84px; border-radius:50%; flex:none;
-            background: conic-gradient(var(--ink) calc(var(--pct) * 1%), #E7E1D5 0); transition: --pct 1.3s cubic-bezier(.2,.8,.2,1); }
-        .gauge::after { content:""; position:absolute; inset:9px; border-radius:50%; background: var(--cream); }
-        .gauge > span { position:absolute; inset:0; z-index:1; display:flex; align-items:center; justify-content:center; font-weight:800; font-size:17px; }
-
-        .pulse-ring { position:absolute; inset:0; border-radius:50%; border:2px solid var(--coral); animation: ping2 2.4s ease-out infinite; }
-        .dots { background-image: radial-gradient(rgba(255,255,255,.2) 1px, transparent 1px); background-size: 20px 20px;
-                -webkit-mask-image: linear-gradient(to bottom left,#000,transparent 70%); mask-image: linear-gradient(to bottom left,#000,transparent 70%); }
-        .row-hover { transition: background .25s ease; }
-        .row-hover:hover { background:#F6EEE9; }
-
-        ::-webkit-scrollbar { width:6px; height:6px; }
-        ::-webkit-scrollbar-thumb { background:#D8CFBF; border-radius:999px; }
-        @media (prefers-reduced-motion: reduce) {
-            *, *::before, *::after { animation-duration:.01ms !important; animation-iteration-count:1 !important; transition-duration:.01ms !important; }
-        }
-    </style>
     <link rel="stylesheet" href="{% static 'prediction/css/kosguss-theme.css' %}">
 </head>
-<body class="min-h-screen font-sans text-ink antialiased selection:bg-lime">
+<body class="min-h-screen font-sans text-ink antialiased">
 
 <!-- Sprite ikon -->
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
     <defs>
         <symbol id="i-home" viewBox="0 0 24 24"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/><path d="M10 20v-6h4v6"/></symbol>
-        <symbol id="i-cash" viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="12" rx="3"/><circle cx="12" cy="12" r="2.5"/><path d="M6.5 12h.01M17.5 12h.01"/></symbol>
+        <symbol id="i-cash" viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="12" rx="3"/><circle cx="12" cy="12" r="2.5"/></symbol>
         <symbol id="i-chart" viewBox="0 0 24 24"><path d="M5 20V11M11 20V4M17 20v-6M3 20h18"/></symbol>
         <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></symbol>
-        <symbol id="i-spark" viewBox="0 0 24 24"><path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8L12 3z"/><path d="M19 16v4M17 18h4"/></symbol>
+        <symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8h.01"/></symbol>
         <symbol id="i-pin" viewBox="0 0 24 24"><path d="M12 21s7-6.2 7-11.5A7 7 0 005 9.5C5 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></symbol>
         <symbol id="i-snow" viewBox="0 0 24 24"><path d="M12 2v20M4.2 7l15.6 10M19.8 7L4.2 17"/></symbol>
         <symbol id="i-fan" viewBox="0 0 24 24"><circle cx="12" cy="12" r="1.8"/><path d="M12 10.2C12 6 10 3.5 7.5 4.2 5.5 4.8 6 8 12 10.2zM13.8 12c4.2 0 6.7-2 6-4.5-.6-2-3.8-1.5-6 4.5zM12 13.8c0 4.2 2 6.7 4.5 6 2-.6 1.5-3.8-4.5-6zM10.2 12c-4.2 0-6.7 2-6 4.5.6 2 3.8 1.5 6-4.5z"/></symbol>
-        <symbol id="i-star" viewBox="0 0 24 24"><path d="M12 3l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1-4.4-4.3 6.1-.9L12 3z"/></symbol>
         <symbol id="i-star-f" viewBox="0 0 24 24"><path d="M12 3l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1-4.4-4.3 6.1-.9L12 3z" fill="currentColor" stroke="none"/></symbol>
         <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></symbol>
         <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></symbol>
         <symbol id="i-up" viewBox="0 0 24 24"><path d="M7 17L17 7M9 7h8v8"/></symbol>
         <symbol id="i-down" viewBox="0 0 24 24"><path d="M7 7l10 10M17 9v8H9"/></symbol>
         <symbol id="i-check" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></symbol>
+        <symbol id="i-alert" viewBox="0 0 24 24"><path d="M12 3l10 18H2L12 3z"/><path d="M12 10v4M12 17.5h.01"/></symbol>
+        <symbol id="i-refresh" viewBox="0 0 24 24"><path d="M4 4v5h5M20 20v-5h-5M5.6 15A7 7 0 0018.4 15M18.4 9A7 7 0 005.6 9"/></symbol>
     </defs>
 </svg>
 
-<!-- ================= NAVBAR ================= -->
-<header class="sticky top-0 z-50 px-3 pt-3 sm:px-6">
-    <div class="mx-auto max-w-7xl">
-        <div id="navShell" class="nav-shell flex items-center justify-between gap-3 rounded-full border border-[#E4DED2] bg-cream/85 py-2 pl-2.5 pr-3 backdrop-blur-xl">
-            <a href="#beranda" data-tab-link="beranda" class="flex items-center gap-3">
-                <div class="flex h-10 w-10 items-center justify-center rounded-full bg-ink text-lg text-lime shadow-lg shadow-black/20"><svg class="ic"><use href="#i-home"/></svg></div>
-                <div class="leading-tight">
-                    <p class="text-[15px] font-extrabold tracking-tight text-ink">GusSearch Kost</p>
-                    <p class="text-[11px] font-medium text-stone-500">Prediksi Kost by Ai</p>
-                </div>
+<!-- ================= NAVIGASI ================= -->
+<header class="sticky top-0 z-50 border-b border-line bg-white/95 backdrop-blur-sm">
+    <div class="mx-auto max-w-7xl px-4 sm:px-8">
+        <div class="flex h-14 items-center justify-between gap-6">
+            <a href="#beranda" data-tab-link="beranda" class="flex items-center gap-2.5">
+                <span class="flex h-8 w-8 items-center justify-center rounded-lg bg-ink text-white"><svg class="ic text-base"><use href="#i-home"/></svg></span>
+                <span class="text-[15px] font-bold tracking-tight">GusSearch Kost <span class="hidden font-medium text-muted sm:inline">• Prediksi Kost by Ai</span></span>
             </a>
-
-            <nav id="deskNav" class="desk-nav relative hidden items-center gap-0.5 rounded-full border border-[#E4DED2] bg-white/70 p-1 text-xs font-semibold text-stone-600 lg:flex" role="tablist">
-                <span class="tab-indicator"></span>
-                <button class="tab-btn flex items-center gap-1.5 rounded-full px-4 py-2" data-tab="beranda"><svg class="ic"><use href="#i-home"/></svg>Beranda</button>
-                <button class="tab-btn flex items-center gap-1.5 rounded-full px-4 py-2" data-tab="cek-harga"><svg class="ic"><use href="#i-cash"/></svg>Cek Harga Kos</button>
-                <button class="tab-btn flex items-center gap-1.5 rounded-full px-4 py-2" data-tab="cari-kos"><svg class="ic"><use href="#i-search"/></svg>Cari Kos</button>
-                <button class="tab-btn flex items-center gap-1.5 rounded-full px-4 py-2" data-tab="grafik"><svg class="ic"><use href="#i-chart"/></svg>Grafik Pasar</button>
-                <button class="tab-btn flex items-center gap-1.5 rounded-full px-4 py-2" data-tab="riwayat"><svg class="ic"><use href="#i-clock"/></svg>Riwayat</button>
-                <button class="tab-btn flex items-center gap-1.5 rounded-full px-4 py-2" data-tab="tentang"><svg class="ic"><use href="#i-spark"/></svg>Tentang Model</button>
+            <nav id="deskNav" class="desk-nav hidden h-full items-stretch gap-1 lg:flex" role="tablist" aria-label="Menu utama">
+                <button role="tab" class="tab-btn" data-tab="beranda">Beranda</button>
+                <button role="tab" class="tab-btn" data-tab="cek-harga">Cek Harga Kos</button>
+                <button role="tab" class="tab-btn" data-tab="cari-kos">Cari Kos</button>
+                <button role="tab" class="tab-btn" data-tab="grafik">Grafik Pasar</button>
+                <button role="tab" class="tab-btn" data-tab="riwayat">Riwayat</button>
+                <button role="tab" class="tab-btn" data-tab="tentang">Tentang Model</button>
             </nav>
-
-            <div class="flex items-center gap-2 rounded-full border border-brand-200 bg-brand-50 px-3 py-1.5 text-[11px] font-semibold text-brand-700">
-                <span class="relative flex h-2 w-2"><span class="absolute inset-0 animate-ping rounded-full bg-brand-400 opacity-70"></span><span class="relative h-2 w-2 rounded-full bg-brand-600"></span></span>
-                <span class="hidden sm:inline">Prediksi Siap Digunakan</span><span class="sm:hidden">Online</span>
-            </div>
         </div>
-
-        <!-- Tab mobile -->
-        <nav class="mob-nav mt-2 flex gap-1.5 overflow-x-auto pb-1 text-xs font-semibold text-stone-600 lg:hidden" role="tablist">
-            <button class="tab-btn flex shrink-0 items-center gap-1.5 rounded-full border border-stone-200 bg-cream px-3.5 py-2" data-tab="beranda"><svg class="ic"><use href="#i-home"/></svg>Beranda</button>
-            <button class="tab-btn flex shrink-0 items-center gap-1.5 rounded-full border border-stone-200 bg-cream px-3.5 py-2" data-tab="cek-harga"><svg class="ic"><use href="#i-cash"/></svg>Cek Harga</button>
-            <button class="tab-btn flex shrink-0 items-center gap-1.5 rounded-full border border-stone-200 bg-cream px-3.5 py-2" data-tab="cari-kos"><svg class="ic"><use href="#i-search"/></svg>Cari Kos</button>
-            <button class="tab-btn flex shrink-0 items-center gap-1.5 rounded-full border border-stone-200 bg-cream px-3.5 py-2" data-tab="grafik"><svg class="ic"><use href="#i-chart"/></svg>Grafik</button>
-            <button class="tab-btn flex shrink-0 items-center gap-1.5 rounded-full border border-stone-200 bg-cream px-3.5 py-2" data-tab="riwayat"><svg class="ic"><use href="#i-clock"/></svg>Riwayat</button>
-            <button class="tab-btn flex shrink-0 items-center gap-1.5 rounded-full border border-stone-200 bg-cream px-3.5 py-2" data-tab="tentang"><svg class="ic"><use href="#i-spark"/></svg>Tentang Model</button>
+        <nav class="mob-nav -mx-1 flex gap-1.5 overflow-x-auto px-1 pb-3 lg:hidden" role="tablist" aria-label="Menu utama">
+            <button role="tab" class="tab-btn" data-tab="beranda"><svg class="ic"><use href="#i-home"/></svg>Beranda</button>
+            <button role="tab" class="tab-btn" data-tab="cek-harga"><svg class="ic"><use href="#i-cash"/></svg>Cek Harga</button>
+            <button role="tab" class="tab-btn" data-tab="cari-kos"><svg class="ic"><use href="#i-search"/></svg>Cari Kos</button>
+            <button role="tab" class="tab-btn" data-tab="grafik"><svg class="ic"><use href="#i-chart"/></svg>Grafik</button>
+            <button role="tab" class="tab-btn" data-tab="riwayat"><svg class="ic"><use href="#i-clock"/></svg>Riwayat</button>
+            <button role="tab" class="tab-btn" data-tab="tentang"><svg class="ic"><use href="#i-info"/></svg>Tentang Model</button>
         </nav>
     </div>
 </header>
@@ -215,245 +74,160 @@
 
     {% if messages %}
         {% for message in messages %}
-            <div class="flash flex items-center justify-between rounded-2xl border px-4 py-3 text-sm {% if message.tags == 'error' %}border-rose-200 bg-rose-50 text-rose-800{% else %}border-brand-200 bg-brand-50 text-brand-700{% endif %}">
-                <span class="flex items-center gap-2">{% if message.tags == 'error' %}⚠️{% else %}<svg class="ic"><use href="#i-check"/></svg>{% endif %} {{ message }}</span>
-                <button onclick="this.parentElement.remove()" class="text-lg leading-none opacity-50 transition hover:opacity-100">&times;</button>
+            <div class="flash flex items-center justify-between gap-3 rounded-lg border px-4 py-3 text-sm {% if message.tags == 'error' %}border-red-200 bg-red-50 text-red-800{% else %}border-teal-200 bg-brand-soft text-brand-dark{% endif %}" role="status">
+                <span class="flex items-center gap-2">{% if message.tags == 'error' %}<svg class="ic"><use href="#i-alert"/></svg>{% else %}<svg class="ic"><use href="#i-check"/></svg>{% endif %}{{ message }}</span>
+                <button type="button" onclick="this.parentElement.remove()" class="text-lg leading-none opacity-60 hover:opacity-100" aria-label="Tutup pesan">&times;</button>
             </div>
         {% endfor %}
     {% endif %}
 
     <!-- ===================================================== -->
-    <!-- TAB 1: BERANDA                                         -->
+    <!-- BERANDA                                                -->
     <!-- ===================================================== -->
-    <section id="tab-beranda" class="tab-panel space-y-6" data-panel="beranda">
+    <section id="tab-beranda" class="tab-panel space-y-8" data-panel="beranda">
 
         <!-- Hero -->
-        <div class="relative overflow-hidden rounded-[2rem] bg-ink p-6 text-white sm:p-10">
-            <div class="dots pointer-events-none absolute inset-0"></div>
-            <div class="pointer-events-none absolute -right-20 -top-24 h-80 w-80 rounded-full bg-brand-500/30 blur-3xl"></div>
-            <div class="pointer-events-none absolute -bottom-28 left-1/4 h-72 w-72 rounded-full bg-brand-500/20 blur-3xl"></div>
-            <div class="relative grid items-center gap-8 lg:grid-cols-5">
-                <div class="lg:col-span-3">
-                    <span class="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-3 py-1.5 text-[11px] font-semibold text-lime">
-                        <svg class="ic"><use href="#i-pin"/></svg> Kota Madiun · {{ summary.jumlah_kos }} data kos asli
-                    </span>
-                    <h1 class="mt-5 text-[2rem] font-extrabold leading-[1.1] tracking-tight sm:text-5xl">
-                        Cari tahu harga kos yang <span class="font-serif text-[1.18em] font-normal italic text-lime">wajar</span> sebelum kamu sewa.
-                    </h1>
-                    <p class="mt-4 max-w-xl text-sm leading-relaxed text-stone-300 sm:text-base">
-                        GusSearch Kost membantu memperkirakan harga sewa bulanan di Kota Madiun berdasarkan jarak ke pusat kota, fasilitas AC, dan rating. Lihat kisaran harga yang wajar serta penjelasan singkat untuk membantu menentukan pilihan.
-                    </p>
-                    <div class="mt-7 flex flex-wrap gap-3">
-                        <button data-tab-link="cek-harga" class="group inline-flex items-center gap-2.5 rounded-full bg-lime py-2 pl-5 pr-2 text-sm font-bold text-ink transition hover:brightness-105 active:scale-95">
-                            Cek Harga Sekarang
-                            <span class="flex h-9 w-9 items-center justify-center rounded-full bg-ink text-lime transition group-hover:translate-x-0.5"><svg class="ic"><use href="#i-arrow"/></svg></span>
-                        </button>
-                        <button data-tab-link="grafik" class="rounded-full border border-white/20 bg-white/10 px-5 py-3 text-sm font-bold text-white transition hover:bg-white/20 active:scale-95">Lihat Grafik Pasar</button>
+        <div class="hero">
+            <div class="grid gap-10 p-7 sm:p-10 lg:grid-cols-12 lg:p-12">
+                <div class="lg:col-span-7">
+                    <p class="flex items-center gap-1.5 text-sm font-medium text-slate-300"><svg class="ic text-teal-300"><use href="#i-pin"/></svg>Kota Madiun, berdasarkan {{ summary.jumlah_kos }} data kos</p>
+                    <h1 class="mt-5 max-w-2xl text-4xl font-semibold leading-[1.08] tracking-tight sm:text-5xl lg:text-[3.4rem]">Ketahui harga kos yang <em>wajar</em> sebelum kamu menyewa.</h1>
+                    <p class="mt-5 max-w-xl text-base leading-relaxed text-slate-300">Perkiraan harga sewa bulanan dihitung dari jarak ke pusat kota, fasilitas AC, dan rating, lengkap dengan kisaran harga dan penjelasan singkat.</p>
+                    <div class="mt-8 flex flex-wrap gap-3">
+                        <button data-tab-link="cek-harga" class="btn btn-primary">Cek harga sekarang</button>
+                        <button data-tab-link="grafik" class="btn btn-outline-light">Lihat grafik pasar</button>
                     </div>
                 </div>
 
-                <div class="lg:col-span-2">
-                    <div class="float-y rounded-[1.5rem] border border-white/10 bg-white/[.06] p-5 backdrop-blur">
-                        <div class="flex items-center justify-between">
-                            <p class="text-xs font-semibold text-stone-400">Harga kos pada umumnya</p>
-                            <span class="rounded-full bg-lime px-2 py-0.5 text-[10px] font-bold text-ink">Rata-rata</span>
-                        </div>
-                        <p class="mt-2 text-4xl font-extrabold tabular-nums tracking-tight sm:text-[2.6rem]">
-                            <span data-count="{{ summary.harga_rata_rata|unlocalize }}" data-prefix="Rp">Rp{{ summary.harga_rata_rata|floatformat:"0g" }}</span>
-                        </p>
-                        <p class="text-xs text-stone-400">rata-rata per bulan</p>
-
-                        <div class="range mt-6" data-min="{{ summary.harga_termurah|unlocalize }}" data-max="{{ summary.harga_termahal|unlocalize }}">
-                            <div class="range-track"></div>
-                            <span class="mk mk-med" data-val="{{ summary.harga_tengah_median|unlocalize }}" title="Harga tengah"></span>
-                            <span class="mk mk-avg" data-val="{{ summary.harga_rata_rata|unlocalize }}" title="Rata-rata"></span>
-                        </div>
-                        <div class="mt-1 flex justify-between text-[10px] font-medium text-stone-500"><span>Termurah</span><span>Termahal</span></div>
-
-                        <div class="mt-4 grid grid-cols-2 gap-3 text-xs">
-                            <div class="rounded-2xl bg-white/[.06] p-3"><p class="text-stone-400">Paling murah</p><p class="mt-1 font-bold text-lime">Rp{{ summary.harga_termurah|floatformat:"0g" }}</p></div>
-                            <div class="rounded-2xl bg-white/[.06] p-3"><p class="text-stone-400">Paling mahal</p><p class="mt-1 font-bold text-brand-400">Rp{{ summary.harga_termahal|floatformat:"0g" }}</p></div>
-                        </div>
+                <div class="mosaic grid grid-cols-2 gap-3 lg:col-span-5">
+                    <div class="tile tile-teal">
+                        <p class="label">Kos dianalisis</p>
+                        <p class="num mt-6 text-4xl font-semibold"><span data-count="{{ summary.jumlah_kos|unlocalize }}">{{ summary.jumlah_kos }}</span></p>
+                        <p class="mt-1 text-xs opacity-80">kos di sekitar Madiun</p>
+                    </div>
+                    <div class="tile tile-light">
+                        <p class="label">Harga tengah</p>
+                        <p class="num mt-6 text-2xl font-semibold sm:text-3xl"><span data-count="{{ summary.harga_tengah_median|unlocalize }}" data-prefix="Rp">Rp{{ summary.harga_tengah_median|floatformat:"0g" }}</span></p>
+                        <p class="mt-1 text-xs text-muted">separuh kos di bawah ini</p>
+                    </div>
+                    <div class="tile tile-glass">
+                        <p class="label">Rata-rata rating</p>
+                        <p class="num mt-6 flex items-baseline gap-1.5 text-4xl font-semibold"><span data-count="{{ summary.rating_rata_rata|unlocalize }}" data-decimals="1">{{ summary.rating_rata_rata }}</span><span class="text-sm font-medium opacity-70">/ 5</span></p>
+                        <div class="bar mt-3"><i data-fill="{{ summary.rating_rata_rata|unlocalize }}" data-of="5"></i></div>
+                    </div>
+                    <div class="tile tile-ink">
+                        <p class="label">Prediksi dibuat</p>
+                        <p class="num mt-6 text-4xl font-semibold text-teal-300"><span data-count="{{ total_predictions|unlocalize }}">{{ total_predictions }}</span></p>
+                        <p class="mt-1 text-xs opacity-70">tersimpan di riwayat</p>
                     </div>
                 </div>
             </div>
+
+            <!-- Filter terintegrasi -->
+            <form method="GET" action="{% url 'dashboard' %}#cari-kos" class="mx-5 mb-5 flex flex-col gap-3 rounded-xl bg-white p-3 text-ink sm:mx-10 sm:mb-10 sm:flex-row sm:items-center lg:mx-12 lg:mb-12">
+                <label for="heroBudget" class="px-2 text-sm font-semibold sm:w-44">Cari kos sesuai budget</label>
+                <div class="relative flex-1">
+                    <span class="absolute left-3.5 top-1/2 -translate-y-1/2 text-sm font-semibold text-muted">Rp</span>
+                    <input id="heroBudget" name="budget" type="text" inputmode="numeric" value="{{ budget_input }}" placeholder="Budget maksimal per bulan, mis. 800.000" required class="input pl-10">
+                </div>
+                <button type="submit" class="btn btn-primary"><svg class="ic"><use href="#i-search"/></svg>Cari kos</button>
+            </form>
         </div>
 
-        <!-- KPI -->
-        <div class="stg grid grid-cols-2 gap-4 lg:grid-cols-4">
-            <div class="card card-hover p-5">
-                <p class="eyebrow">Kos yang dianalisis</p>
-                <p class="mt-3 text-3xl font-extrabold tabular-nums tracking-tight"><span data-count="{{ summary.jumlah_kos|unlocalize }}">{{ summary.jumlah_kos }}</span></p>
-                <p class="mt-1 text-xs text-stone-500">kos di sekitar Madiun</p>
-            </div>
-            <div class="card card-hover p-5">
-                <p class="eyebrow">Harga tengah</p>
-                <p class="mt-3 text-3xl font-extrabold tabular-nums tracking-tight"><span data-count="{{ summary.harga_tengah_median|unlocalize }}" data-prefix="Rp">Rp{{ summary.harga_tengah_median|floatformat:"0g" }}</span></p>
-                <p class="mt-1 text-xs text-stone-500">separuh kos di bawah harga ini</p>
-            </div>
-            <div class="card card-hover p-5" style="background:linear-gradient(160deg,#F0E8E1,#FBF7F2)">
-                <p class="eyebrow text-brand-600">Rata-rata rating</p>
-                <p class="mt-3 flex items-center gap-2 text-3xl font-extrabold tabular-nums tracking-tight"><svg class="ic text-brand-500" style="fill:#B96843;stroke:none"><use href="#i-star-f"/></svg><span data-count="{{ summary.rating_rata_rata|unlocalize }}" data-decimals="1">{{ summary.rating_rata_rata }}</span></p>
-                <div class="bar mt-2.5"><i data-fill="{{ summary.rating_rata_rata|unlocalize }}" data-of="5"></i></div>
-                <p class="mt-1.5 text-xs text-stone-500">dari skala 5</p>
-            </div>
-            <div class="card-hover card relative overflow-hidden p-5" style="background:var(--ink);border-color:var(--ink);color:#fff">
-                <div class="pointer-events-none absolute -right-8 -top-8 h-28 w-28 rounded-full bg-lime/25 blur-2xl"></div>
-                <p class="eyebrow" style="color:#9C9484">Sudah dicek</p>
-                <p class="relative mt-3 text-3xl font-extrabold tabular-nums tracking-tight text-lime"><span data-count="{{ total_predictions|unlocalize }}">{{ total_predictions }}</span><span class="text-base font-semibold text-stone-500">×</span></p>
-                <p class="relative mt-1 text-xs text-stone-400">prediksi harga dibuat</p>
-            </div>
-        </div>
-
-        <div class="grid gap-6 lg:grid-cols-5">
+        <!-- Sebaran harga -->
+        <div class="panel grid items-center gap-6 p-6 lg:grid-cols-12 lg:gap-10">
             <div class="lg:col-span-3">
-                {% include "prediction/_ai_card.html" with topik="ringkasan" judul="Ringkasan Pasar Kos Madiun" %}
+                <p class="label">Rata-rata harga sewa per bulan</p>
+                <p class="num mt-1 text-3xl font-semibold"><span data-count="{{ summary.harga_rata_rata|unlocalize }}" data-prefix="Rp">Rp{{ summary.harga_rata_rata|floatformat:"0g" }}</span></p>
             </div>
-            <div class="card p-6 lg:col-span-2">
-                <p class="text-sm font-bold">Cara pakai dalam 3 langkah</p>
-                <ol class="relative mt-5 space-y-5 text-sm">
-                    <span class="absolute left-[13px] top-3 bottom-3 w-px bg-gradient-to-b from-lime via-stone-300 to-brand-200"></span>
-                    <li class="relative flex gap-3"><span class="relative z-10 flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-lime text-xs font-extrabold text-ink ring-4 ring-cream">1</span><span class="pt-0.5 text-stone-600">Buka tab <b class="text-ink">Cek Harga Kos</b>, isi jarak, AC, dan rating.</span></li>
-                    <li class="relative flex gap-3"><span class="relative z-10 flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-ink text-xs font-extrabold text-white ring-4 ring-cream">2</span><span class="pt-0.5 text-stone-600">Tekan <b class="text-ink">Hitung Perkiraan Harga</b> — hasilnya langsung muncul.</span></li>
-                    <li class="relative flex gap-3"><span class="relative z-10 flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-brand-50 text-xs font-extrabold text-brand-700 ring-4 ring-cream">3</span><span class="pt-0.5 text-stone-600">Baca <b class="text-ink">penjelasan otomatis</b> agar tahu apakah harganya wajar.</span></li>
+            <div class="lg:col-span-6">
+                <div class="range mt-4" data-min="{{ summary.harga_termurah|unlocalize }}" data-max="{{ summary.harga_termahal|unlocalize }}">
+                    <div class="range-track" style="background:linear-gradient(90deg,#99F6E4,var(--teal))"></div>
+                    <span class="mk mk-med" data-val="{{ summary.harga_tengah_median|unlocalize }}" title="Harga tengah"></span>
+                    <span class="mk mk-avg" data-val="{{ summary.harga_rata_rata|unlocalize }}" title="Rata-rata"></span>
+                </div>
+                <div class="num mt-2 flex justify-between text-xs text-muted"><span>Termurah Rp{{ summary.harga_termurah|floatformat:"0g" }}</span><span>Termahal Rp{{ summary.harga_termahal|floatformat:"0g" }}</span></div>
+            </div>
+            <div class="flex flex-wrap gap-x-5 gap-y-1 text-xs text-muted lg:col-span-3 lg:flex-col">
+                <span class="inline-flex items-center gap-1.5"><i class="h-2.5 w-2.5 rounded-full border-2 border-ink bg-white"></i>Rata-rata</span>
+                <span class="inline-flex items-center gap-1.5"><i class="h-3 w-[3px] rounded bg-brand"></i>Harga tengah (median)</span>
+            </div>
+        </div>
+
+        <div class="grid items-start gap-6 lg:grid-cols-5">
+            <div class="lg:col-span-3">
+                {% include "prediction/_ai_card.html" with topik="ringkasan" judul="Ringkasan pasar kos Madiun" %}
+            </div>
+            <div class="panel p-6 lg:col-span-2">
+                <h3 class="text-[15px] font-bold">Cara pakai</h3>
+                <ol class="mt-4 space-y-4 text-sm text-muted">
+                    <li class="flex gap-3"><span class="num flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-surface text-xs font-bold text-ink">1</span><span>Buka <b class="text-ink">Cek Harga Kos</b>, lalu isi jarak, AC, dan rating.</span></li>
+                    <li class="flex gap-3"><span class="num flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-surface text-xs font-bold text-ink">2</span><span>Tekan <b class="text-ink">Hitung perkiraan harga</b>. Hasil muncul di sebelah form.</span></li>
+                    <li class="flex gap-3"><span class="num flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-surface text-xs font-bold text-ink">3</span><span>Baca penjelasan untuk tahu apakah harganya wajar, atau coba <b class="text-ink">Cari Kos</b> berdasarkan budget.</span></li>
                 </ol>
             </div>
         </div>
     </section>
 
     <!-- ===================================================== -->
-    <!-- TAB: CARI KOS BERDASARKAN BUDGET                       -->
+    <!-- CARI KOS                                               -->
     <!-- ===================================================== -->
     <section id="tab-cari-kos" class="tab-panel hidden space-y-6" data-panel="cari-kos">
-        <div>
-            <p class="eyebrow text-brand-600">Temukan tempat tinggal</p>
-            <h2 class="mt-2 text-2xl font-extrabold tracking-tight sm:text-3xl">
-                Temukan <span class="font-serif font-normal italic text-brand-600">Kos Impianmu</span>
-            </h2>
-            <p class="mt-2 text-sm text-stone-500">
-                Masukkan anggaran bulananmu untuk menemukan kos yang sesuai dari data kos Kota Madiun.
-            </p>
+        <div class="page-head">
+            <h2 class="page-title">Cari kos sesuai <em>budget</em></h2>
+            <p class="mt-1 text-sm text-muted">Masukkan anggaran bulanan untuk melihat kos dari data Kota Madiun yang harganya di bawah atau sama dengan budget.</p>
         </div>
 
         <div class="grid items-start gap-6 lg:grid-cols-12">
-            <form method="GET" action="{% url 'dashboard' %}#cari-kos"
-                  class="card space-y-5 p-6 lg:col-span-4">
+            <form method="GET" action="{% url 'dashboard' %}#cari-kos" class="panel space-y-4 p-6 lg:col-span-4 lg:sticky lg:top-24">
                 <div>
-                    <label for="budget" class="mb-2 block text-sm font-bold">Budget maksimal per bulan</label>
+                    <label for="budget" class="mb-2 block text-sm font-semibold">Budget maksimal per bulan</label>
                     <div class="relative">
-                        <span class="absolute left-4 top-1/2 -translate-y-1/2 text-sm font-bold text-stone-500">Rp</span>
-                        <input
-                            id="budget"
-                            name="budget"
-                            type="text"
-                            inputmode="numeric"
-                            value="{{ budget_input }}"
-                            placeholder="800.000"
-                            required
-                            class="w-full rounded-xl border border-stone-200 bg-white py-3 pl-12 pr-4 text-sm font-semibold outline-none transition focus:border-brand-600 focus:ring-2 focus:ring-brand-600/10"
-                        >
+                        <span class="absolute left-3.5 top-1/2 -translate-y-1/2 text-sm font-semibold text-muted">Rp</span>
+                        <input id="budget" name="budget" type="text" inputmode="numeric" value="{{ budget_input }}" placeholder="800.000" required class="input pl-10"
+                               {% if budget_error %}aria-invalid="true" aria-describedby="budgetError"{% else %}aria-describedby="budgetHint"{% endif %}>
                     </div>
-                    <p class="mt-2 text-xs text-stone-500">
-                        Masukkan budget Rp100.000 sampai Rp10.000.000.
-                    </p>
+                    <p id="budgetHint" class="field-hint mt-2">Isi antara Rp100.000 dan Rp10.000.000.</p>
+                    {% if budget_error %}<p id="budgetError" class="field-error mt-2" role="alert">{{ budget_error }}</p>{% endif %}
                 </div>
-
-                <button type="submit"
-                        class="flex w-full items-center justify-center gap-2 rounded-xl bg-ink px-5 py-3 text-sm font-bold text-white transition hover:bg-brand-600">
-                    <svg class="ic"><use href="#i-search"/></svg>
-                    Cari Kos Sesuai Budget
-                </button>
-
-                {% if budget_error %}
-                    <p class="rounded-xl border border-rose-200 bg-rose-50 p-3 text-sm text-rose-700">
-                        {{ budget_error }}
-                    </p>
-                {% endif %}
+                <button type="submit" class="btn btn-primary w-full"><svg class="ic"><use href="#i-search"/></svg>Cari kos</button>
             </form>
 
             <div class="space-y-4 lg:col-span-8">
                 {% if budget %}
-                    <div class="flex flex-wrap items-center justify-between gap-3">
-                        <div>
-                            <p class="text-sm font-bold">Hasil rekomendasi</p>
-                            <p class="mt-1 text-xs text-stone-500">
-                                Budget maksimal Rp{{ budget|floatformat:0 }}
-                            </p>
-                        </div>
-                        <span class="rounded-full bg-lime/30 px-4 py-2 text-xs font-bold text-ink">
-                            {{ recommended_count }} kos ditemukan
-                        </span>
+                    <div class="flex flex-wrap items-baseline justify-between gap-2">
+                        <h3 class="text-[15px] font-bold">{{ recommended_count }} kos ditemukan</h3>
+                        <p class="num text-sm text-muted">Budget maksimal Rp{{ budget|floatformat:0 }}</p>
                     </div>
 
                     {% if recommended_kos %}
                         <div class="grid gap-4 sm:grid-cols-2">
                             {% for kos in recommended_kos %}
-                                <article class="card card-hover space-y-4 p-5">
-                                    <div class="flex items-start justify-between gap-3">
-                                        <div>
-                                            <h3 class="font-extrabold">{{ kos.nama }}</h3>
-                                            <p class="mt-1 text-xs text-stone-500">Pilihan sesuai anggaran</p>
-                                        </div>
-                                        <span class="rounded-full bg-lime/30 px-3 py-1 text-xs font-bold text-ink">
-                                            Cocok
-                                        </span>
-                                    </div>
+                                <article class="panel flex flex-col p-5 transition-colors hover:border-slate-300">
+                                    <h4 class="font-bold leading-snug">{{ kos.nama }}</h4>
+                                    <p class="num mt-3 text-2xl font-bold">Rp{{ kos.harga|floatformat:0 }}<span class="ml-1 text-xs font-medium text-muted">/ bulan</span></p>
 
-                                    <div>
-                                        <p class="text-2xl font-extrabold tracking-tight text-brand-600">
-                                            Rp{{ kos.harga|floatformat:0 }}
-                                        </p>
-                                        <p class="text-xs text-stone-500">per bulan</p>
-                                    </div>
+                                    <dl class="num mt-4 grid grid-cols-3 divide-x divide-line rounded-lg bg-surface py-3 text-center">
+                                        <div><dd class="text-sm font-semibold">{{ kos.jarak }} km</dd><dt class="mt-0.5 text-xs text-muted">Jarak</dt></div>
+                                        <div><dd class="inline-flex items-center gap-1 text-sm font-semibold"><svg class="ic text-brand"><use href="#i-star-f"/></svg>{{ kos.rating }}</dd><dt class="mt-0.5 text-xs text-muted">Rating</dt></div>
+                                        <div><dd class="text-sm font-semibold">{% if kos.ac == "ya" %}Ada{% else %}Tidak{% endif %}</dd><dt class="mt-0.5 text-xs text-muted">AC</dt></div>
+                                    </dl>
 
-                                    <div class="grid grid-cols-3 gap-2 border-t border-stone-100 pt-4 text-center">
-                                        <div>
-                                            <p class="text-sm font-bold">{{ kos.jarak }} km</p>
-                                            <p class="text-xs text-stone-500">Jarak</p>
-                                        </div>
-                                        <div>
-                                            <p class="text-sm font-bold">⭐ {{ kos.rating }}</p>
-                                            <p class="text-xs text-stone-500">Rating</p>
-                                        </div>
-                                        <div>
-                                            <p class="text-sm font-bold">{% if kos.ac == "ya" %}Ada{% else %}Tidak{% endif %}</p>
-                                            <p class="text-xs text-stone-500">AC</p>
-                                        </div>
-                                    </div>
-
-                                    <a
-                                        href="https://www.google.com/maps/search/?api=1&query={{ kos.nama|urlencode }}%20Madiun"
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        class="inline-flex items-center gap-2 text-sm font-semibold text-brand-600 transition hover:text-brand-800"
-                                    >
-                                        <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
-                                            <path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/>
-                                            <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.5-7.5 11-7.5 11s-7.5-3.5-7.5-11a7.5 7.5 0 1 1 15 0Z"/>
-                                        </svg>
-                                        Buka Google Maps
-                                    </a>
+                                    <a href="https://www.google.com/maps/search/?api=1&query={{ kos.nama|urlencode }}%20Madiun" target="_blank" rel="noopener noreferrer"
+                                       class="btn btn-secondary btn-sm mt-4 w-full"><svg class="ic"><use href="#i-pin"/></svg>Buka Google Maps</a>
                                 </article>
                             {% endfor %}
                         </div>
                     {% else %}
-                        <div class="card p-8 text-center">
-                            <p class="text-3xl">🔎</p>
-                            <h3 class="mt-3 font-bold">Belum ada kos yang sesuai</h3>
-                            <p class="mt-1 text-sm text-stone-500">
-                                Coba naikkan budget maksimal agar lebih banyak pilihan ditemukan.
-                            </p>
+                        <div class="panel border-dashed p-10 text-center">
+                            <h3 class="font-bold">Belum ada kos yang sesuai</h3>
+                            <p class="mx-auto mt-1 max-w-sm text-sm text-muted">Coba naikkan budget maksimal agar lebih banyak pilihan muncul.</p>
                         </div>
                     {% endif %}
                 {% else %}
-                    <div class="card flex min-h-64 flex-col items-center justify-center p-8 text-center">
-                        <div class="flex h-16 w-16 items-center justify-center rounded-2xl bg-lime/30 text-3xl">
-                            <svg class="ic" style="width:30px;height:30px"><use href="#i-search"/></svg>
-                        </div>
-                        <h3 class="mt-4 text-lg font-extrabold">Siap mencari kos?</h3>
-                        <p class="mt-2 max-w-md text-sm leading-relaxed text-stone-500">
-                            Masukkan budget maksimal di sebelah kiri. Kami akan mencarikan pilihan kos yang sesuai dari data yang tersedia.
-                        </p>
+                    <div class="panel border-dashed p-10 text-center">
+                        <h3 class="font-bold">Mulai dengan budget</h3>
+                        <p class="mx-auto mt-1 max-w-md text-sm leading-relaxed text-muted">Isi budget maksimal di formulir, lalu hasilnya tampil di sini lengkap dengan jarak, rating, AC, dan tautan Google Maps.</p>
                     </div>
                 {% endif %}
             </div>
@@ -461,196 +235,143 @@
     </section>
 
     <!-- ===================================================== -->
-    <!-- TAB 2: CEK HARGA KOS                                   -->
+    <!-- CEK HARGA KOS                                          -->
     <!-- ===================================================== -->
     <section id="tab-cek-harga" class="tab-panel hidden" data-panel="cek-harga">
-        <div class="mb-6">
-            <h2 class="text-2xl font-extrabold tracking-tight sm:text-3xl">Cek <span class="font-serif text-[1.15em] font-normal italic">Harga Kos</span></h2>
-            <p class="mt-1 text-sm text-stone-500">Isi ciri-ciri kost yang kamu incar, lalu model akan memperkirakan harga sewanya per bulan.</p>
+        <div class="page-head mb-6">
+            <h2 class="page-title">Cek harga <em>kos</em></h2>
+            <p class="mt-1 text-sm text-muted">Isi ciri-ciri kos yang kamu incar. Model memperkirakan harga sewanya per bulan.</p>
         </div>
 
         <div class="grid items-start gap-6 lg:grid-cols-12">
-            <!-- Form -->
-            <form id="predictForm" method="POST" action="{% url 'predict' %}#cek-harga" class="card space-y-7 p-6 sm:p-7 lg:col-span-5">
+            <form id="predictForm" method="POST" action="{% url 'predict' %}#cek-harga" class="panel p-6 sm:p-7 lg:col-span-5" novalidate>
                 {% csrf_token %}
 
-                <div>
-                    <div class="flex items-center justify-between">
-                        <label for="jarakInput" class="flex items-center gap-2 text-sm font-bold"><svg class="ic text-brand-600"><use href="#i-pin"/></svg>Jarak ke pusat kota</label>
-                        <span class="rounded-full bg-brand-50 px-3 py-1 text-xs font-extrabold tabular-nums text-brand-600"><span id="jarakDisplay">1.5</span> km</span>
+                <div class="form-section">
+                    <div class="flex items-center justify-between gap-3">
+                        <label for="jarakInput" class="text-sm font-semibold">Jarak ke pusat kota</label>
+                        <span class="num text-sm font-semibold text-brand-dark"><span id="jarakDisplay">1.5</span> km</span>
                     </div>
-                    <p class="mt-1 text-xs text-stone-400">Seberapa jauh kos dari alun-alun / pusat kota Madiun.</p>
+                    <p class="field-hint mt-1">Jarak kos dari alun-alun atau pusat kota Madiun.</p>
                     <div class="mt-4 flex items-center gap-3">
-                        <input type="range" id="jarakRange" min="0.1" max="20" step="0.1" value="{{ latest_prediction.jarak_km|default:'1.5' }}" class="coral w-full" data-sync="jarak">
-                        <input type="number" name="jarak_km" id="jarakInput" min="0.1" max="20" step="0.1" value="{{ latest_prediction.jarak_km|default:'1.5' }}" required data-sync="jarak"
-                               class="w-20 rounded-xl border border-stone-200 bg-white px-2 py-1.5 text-center text-sm font-bold tabular-nums transition focus:outline-none focus:ring-2 focus:ring-ink">
+                        <input type="range" id="jarakRange" min="0.1" max="20" step="0.1" value="{{ latest_prediction.jarak_km|default:'1.5' }}" class="w-full" data-sync="jarak" aria-label="Jarak, geser">
+                        <input type="number" name="jarak_km" id="jarakInput" min="0.1" max="20" step="0.1" value="{{ latest_prediction.jarak_km|default:'1.5' }}" required data-sync="jarak" class="input num w-20 px-2 text-center" aria-describedby="jarakHint">
                     </div>
-                    <div class="mt-1.5 flex justify-between text-[10px] text-stone-400"><span>Dekat</span><span>Sedang</span><span>Jauh (20 km)</span></div>
+                    <div class="mt-1.5 flex justify-between text-xs text-muted"><span>Dekat</span><span>Jauh (20 km)</span></div>
+                    <p id="jarakHint" class="field-error mt-2 hidden" role="alert">Masukkan jarak antara 0,1 dan 20 km.</p>
                 </div>
 
-                <div>
-                    <p class="flex items-center gap-2 text-sm font-bold"><svg class="ic text-brand-600"><use href="#i-snow"/></svg>Ada AC di kamar?</p>
-                    <div class="mt-3 grid grid-cols-2 gap-3">
-                        <label class="choice cursor-pointer">
-                            <input type="radio" name="ac" value="ya" class="sr-only" {% if not latest_prediction or latest_prediction.ac == "ya" %}checked{% endif %}>
-                            <div class="choice-box flex items-center gap-3 p-3.5">
-                                <span class="flex h-10 w-10 items-center justify-center rounded-xl bg-ink/90 text-lg text-white"><svg class="ic"><use href="#i-snow"/></svg></span>
-                                <div><p class="text-sm font-bold">Ada AC</p><p class="text-[11px] text-stone-500">Kamar sejuk</p></div>
-                                <span class="chk absolute right-2.5 top-2.5 flex h-5 w-5 items-center justify-center rounded-full bg-ink text-[11px] text-lime"><svg class="ic"><use href="#i-check"/></svg></span>
-                            </div>
-                        </label>
-                        <label class="choice cursor-pointer">
-                            <input type="radio" name="ac" value="tidak" class="sr-only" {% if latest_prediction.ac == "tidak" %}checked{% endif %}>
-                            <div class="choice-box flex items-center gap-3 p-3.5">
-                                <span class="flex h-10 w-10 items-center justify-center rounded-xl bg-stone-200 text-lg text-stone-700"><svg class="ic"><use href="#i-fan"/></svg></span>
-                                <div><p class="text-sm font-bold">Tanpa AC</p><p class="text-[11px] text-stone-500">Kipas angin</p></div>
-                                <span class="chk absolute right-2.5 top-2.5 flex h-5 w-5 items-center justify-center rounded-full bg-ink text-[11px] text-lime"><svg class="ic"><use href="#i-check"/></svg></span>
-                            </div>
-                        </label>
-                    </div>
+                <div class="form-section">
+                    <fieldset>
+                        <legend class="text-sm font-semibold">Fasilitas kamar</legend>
+                        <div class="mt-3 grid grid-cols-2 gap-3">
+                            <label class="choice cursor-pointer">
+                                <input type="radio" name="ac" value="ya" class="sr-only" {% if not latest_prediction or latest_prediction.ac == "ya" %}checked{% endif %}>
+                                <span class="choice-box flex items-center gap-3 p-3.5">
+                                    <svg class="ic text-xl text-ink"><use href="#i-snow"/></svg>
+                                    <span><span class="block text-sm font-semibold">Ada AC</span><span class="block text-xs text-muted">Kamar ber-AC</span></span>
+                                    <svg class="ic chk absolute right-2.5 top-2.5 text-brand"><use href="#i-check"/></svg>
+                                </span>
+                            </label>
+                            <label class="choice cursor-pointer">
+                                <input type="radio" name="ac" value="tidak" class="sr-only" {% if latest_prediction.ac == "tidak" %}checked{% endif %}>
+                                <span class="choice-box flex items-center gap-3 p-3.5">
+                                    <svg class="ic text-xl text-ink"><use href="#i-fan"/></svg>
+                                    <span><span class="block text-sm font-semibold">Tanpa AC</span><span class="block text-xs text-muted">Kipas angin</span></span>
+                                    <svg class="ic chk absolute right-2.5 top-2.5 text-brand"><use href="#i-check"/></svg>
+                                </span>
+                            </label>
+                        </div>
+                    </fieldset>
                 </div>
 
-                <div>
-                    <div class="flex items-center justify-between">
-                        <label for="ratingInput" class="flex items-center gap-2 text-sm font-bold"><svg class="ic text-brand-500"><use href="#i-star"/></svg>Rating kos</label>
-                        <span class="rounded-full bg-brand-50 px-3 py-1 text-xs font-extrabold tabular-nums text-brand-600"><span id="ratingDisplay">4.0</span> / 5</span>
+                <div class="form-section">
+                    <div class="flex items-center justify-between gap-3">
+                        <label for="ratingInput" class="text-sm font-semibold">Rating kos</label>
+                        <span class="num text-sm font-semibold text-brand-dark"><span id="ratingDisplay">4.0</span> / 5</span>
                     </div>
-                    <p class="mt-1 text-xs text-stone-400">Nilai ulasan penghuni (misalnya dari Google Maps / Mamikos).</p>
-                    <div class="relative mt-3 inline-block text-[22px] leading-none" aria-hidden="true">
-                        <div class="flex text-stone-300">
-                            <svg class="ic"><use href="#i-star-f"/></svg><svg class="ic"><use href="#i-star-f"/></svg><svg class="ic"><use href="#i-star-f"/></svg><svg class="ic"><use href="#i-star-f"/></svg><svg class="ic"><use href="#i-star-f"/></svg>
-                        </div>
-                        <div id="starFill" class="absolute inset-0 overflow-hidden text-brand-400" style="width:80%;transition:width .35s cubic-bezier(.2,.8,.2,1)">
-                            <div class="flex w-max">
-                                <svg class="ic"><use href="#i-star-f"/></svg><svg class="ic"><use href="#i-star-f"/></svg><svg class="ic"><use href="#i-star-f"/></svg><svg class="ic"><use href="#i-star-f"/></svg><svg class="ic"><use href="#i-star-f"/></svg>
-                            </div>
-                        </div>
+                    <p class="field-hint mt-1">Nilai ulasan penghuni, misalnya dari Google Maps atau Mamikos.</p>
+                    <div class="mt-4 flex items-center gap-3">
+                        <input type="range" id="ratingRange" min="0" max="5" step="0.1" value="{{ latest_prediction.rating|default_if_none:'4.0' }}" class="w-full" data-sync="rating" aria-label="Rating, geser">
+                        <input type="number" name="rating" id="ratingInput" min="0" max="5" step="0.1" value="{{ latest_prediction.rating|default_if_none:'4.0' }}" required data-sync="rating" class="input num w-20 px-2 text-center" aria-describedby="ratingHint">
                     </div>
-                    <div class="mt-3 flex items-center gap-3">
-                        <input type="range" id="ratingRange" min="0" max="5" step="0.1" value="{{ latest_prediction.rating|default_if_none:'4.0' }}" class="amber w-full" data-sync="rating">
-                        <input type="number" name="rating" id="ratingInput" min="0" max="5" step="0.1" value="{{ latest_prediction.rating|default_if_none:'4.0' }}" required data-sync="rating"
-                               class="w-20 rounded-xl border border-stone-200 bg-white px-2 py-1.5 text-center text-sm font-bold tabular-nums transition focus:outline-none focus:ring-2 focus:ring-brand-400">
-                    </div>
+                    <p id="ratingHint" class="field-error mt-2 hidden" role="alert">Masukkan rating antara 0 dan 5.</p>
                 </div>
 
-                <button type="submit" id="submitBtn" class="btn-ink">
-                    <span id="submitLabel">Hitung Perkiraan Harga</span>
-                    <span class="btn-arrow"><svg class="ic"><use href="#i-arrow"/></svg></span>
-                </button>
+                <div class="form-section space-y-3">
+                    <button type="submit" id="submitBtn" class="btn btn-primary w-full"><span id="submitLabel">Hitung perkiraan harga</span></button>
 
-                {% if latest_prediction %}
-                    <button type="button" id="simulateBtn"
-                            class="w-full rounded-xl border-2 border-brand-600 px-5 py-3 font-bold text-brand-700 transition hover:bg-brand-50">
-                        Simulasikan Perubahan
-                    </button>
-
-                    <div id="simulationResult"
-                         class="hidden rounded-2xl border border-brand-200 bg-brand-50 p-5"
-                         aria-live="polite">
-                        <p class="text-xs font-bold uppercase tracking-wider text-brand-700">
-                            Hasil Simulasi
-                        </p>
-                        <div class="mt-4 grid grid-cols-2 gap-3">
-                            <div class="rounded-xl bg-white p-3">
-                                <p class="text-xs text-stone-500">Prediksi awal</p>
-                                <p id="simulationOriginal" class="mt-1 text-lg font-extrabold text-ink">-</p>
+                    {% if latest_prediction %}
+                        <button type="button" id="simulateBtn" class="btn btn-secondary w-full">Simulasikan perubahan</button>
+                        <div id="simulationResult" class="panel-flat hidden p-4" aria-live="polite">
+                            <p class="text-sm font-semibold">Hasil simulasi</p>
+                            <div class="mt-3 grid grid-cols-2 gap-3">
+                                <div class="rounded-lg bg-white p-3"><p class="label">Prediksi awal</p><p id="simulationOriginal" class="num mt-1 text-lg font-bold">-</p></div>
+                                <div class="rounded-lg bg-white p-3"><p class="label">Skenario baru</p><p id="simulationNew" class="num mt-1 text-lg font-bold">-</p></div>
                             </div>
-                            <div class="rounded-xl bg-white p-3">
-                                <p class="text-xs text-stone-500">Skenario baru</p>
-                                <p id="simulationNew" class="mt-1 text-lg font-extrabold text-ink">-</p>
-                            </div>
+                            <p id="simulationDifference" class="mt-3 text-sm font-medium"></p>
                         </div>
-                        <p id="simulationDifference" class="mt-3 text-sm font-semibold text-ink"></p>
-                    </div>
-                {% else %}
-                    <p class="text-center text-xs text-stone-500">
-                        Buat prediksi awal terlebih dahulu untuk menggunakan simulasi.
-                    </p>
-                {% endif %}
+                    {% else %}
+                        <p class="field-hint text-center">Buat prediksi awal dulu untuk memakai simulasi.</p>
+                    {% endif %}
+                </div>
             </form>
 
             <!-- Hasil -->
             <div class="space-y-6 lg:col-span-7">
                 {% if latest_prediction %}
-                    <div class="relative overflow-hidden rounded-[1.75rem] p-7 text-ink shadow-xl shadow-brand-700/15" style="background:linear-gradient(135deg,#E1BBA7 0%,#D39A7D 48%,#B96843 100%)">
-                        <div class="pointer-events-none absolute -right-10 -top-12 h-52 w-52 rounded-full bg-white/40 blur-2xl"></div>
-                        <div class="relative flex items-center justify-between">
-                            <p class="text-xs font-bold uppercase tracking-wider text-ink/60">Perkiraan harga sewa</p>
-                            <span class="rounded-full bg-ink px-2.5 py-1 text-[10px] font-bold text-lime">Estimasi Model</span>
+                    <div class="panel border-t-[3px] border-t-brand p-6 sm:p-7">
+                        <div class="flex items-center justify-between gap-3">
+                            <p class="label">Perkiraan harga sewa</p>
+                            <p class="text-xs text-muted">Estimasi model, bukan harga resmi</p>
                         </div>
-                        <p class="relative mt-2 text-4xl font-extrabold tabular-nums tracking-tight sm:text-5xl"><span data-count="{{ latest_prediction.predicted_price|unlocalize }}" data-prefix="Rp">Rp{{ latest_prediction.predicted_price|floatformat:"0g" }}</span><span class="text-lg font-semibold text-ink/60"> / bulan</span></p>
+                        <p class="num mt-2 text-4xl font-bold sm:text-5xl"><span data-count="{{ latest_prediction.predicted_price|unlocalize }}" data-prefix="Rp">Rp{{ latest_prediction.predicted_price|floatformat:"0g" }}</span><span class="ml-1 text-base font-medium text-muted">/ bulan</span></p>
+
                         {% if price_range %}
-                            <p class="relative mt-2 text-sm text-ink/80">Kisaran wajar: <b>Rp{{ price_range.min|floatformat:"0g" }} – Rp{{ price_range.max|floatformat:"0g" }}</b></p>
-                            <div class="range on-light relative mt-4" data-min="{{ price_range.min|unlocalize }}" data-max="{{ price_range.max|unlocalize }}" style="height:10px">
-                                <div class="range-track" style="background:rgba(22,20,15,.14)"></div>
-                                <div class="absolute inset-y-0 left-0 right-0 rounded-full" style="background:linear-gradient(90deg,rgba(22,20,15,.55),rgba(22,20,15,.9))"></div>
+                            <div class="range mt-8" data-min="{{ price_range.min|unlocalize }}" data-max="{{ price_range.max|unlocalize }}">
+                                <div class="range-track" style="background:linear-gradient(90deg,#99F6E4,var(--teal))"></div>
                                 <span class="mk mk-avg" data-val="{{ latest_prediction.predicted_price|unlocalize }}"></span>
                             </div>
+                            <div class="num mt-2 flex justify-between text-xs text-muted"><span>Rp{{ price_range.min|floatformat:"0g" }}</span><span>Kisaran wajar</span><span>Rp{{ price_range.max|floatformat:"0g" }}</span></div>
                         {% endif %}
-                        <div class="relative mt-5 flex flex-wrap gap-2 text-xs font-semibold">
-                            <span class="inline-flex items-center gap-1.5 rounded-full bg-white/50 px-3 py-1.5"><svg class="ic"><use href="#i-pin"/></svg>{{ latest_prediction.jarak_km }} km</span>
-                            <span class="inline-flex items-center gap-1.5 rounded-full bg-white/50 px-3 py-1.5">{% if latest_prediction.ac == 'ya' %}<svg class="ic"><use href="#i-snow"/></svg>Ada AC{% else %}<svg class="ic"><use href="#i-fan"/></svg>Tanpa AC{% endif %}</span>
-                            <span class="inline-flex items-center gap-1.5 rounded-full bg-white/50 px-3 py-1.5"><svg class="ic"><use href="#i-star"/></svg>{{ latest_prediction.rating }}</span>
-                            <span class="inline-flex items-center gap-1.5 rounded-full bg-ink px-3 py-1.5 text-white">
-                                {% if latest_prediction.lebih_mahal %}<svg class="ic text-brand-400"><use href="#i-up"/></svg>Rp{{ latest_prediction.selisih|floatformat:"0g" }} di atas rata-rata{% else %}<svg class="ic text-lime"><use href="#i-down"/></svg>Rp{{ latest_prediction.selisih|floatformat:"0g" }} di bawah rata-rata{% endif %}
-                            </span>
-                        </div>
+
+                        <dl class="mt-6 grid grid-cols-2 gap-4 border-t border-line pt-5 text-sm sm:grid-cols-4">
+                            <div><dt class="label">Jarak</dt><dd class="num mt-1 font-semibold">{{ latest_prediction.jarak_km }} km</dd></div>
+                            <div><dt class="label">AC</dt><dd class="mt-1 font-semibold">{% if latest_prediction.ac == 'ya' %}Ada AC{% else %}Tanpa AC{% endif %}</dd></div>
+                            <div><dt class="label">Rating</dt><dd class="num mt-1 font-semibold">{{ latest_prediction.rating }}</dd></div>
+                            <div><dt class="label">Dibanding rata-rata</dt>
+                                <dd class="num mt-1 inline-flex items-center gap-1 font-semibold">
+                                    {% if latest_prediction.lebih_mahal %}<svg class="ic"><use href="#i-up"/></svg>Rp{{ latest_prediction.selisih|floatformat:"0g" }}{% else %}<svg class="ic"><use href="#i-down"/></svg>Rp{{ latest_prediction.selisih|floatformat:"0g" }}{% endif %}
+                                </dd>
+                                <dd class="text-xs text-muted">{% if latest_prediction.lebih_mahal %}di atas rata-rata{% else %}di bawah rata-rata{% endif %}</dd>
+                            </div>
+                        </dl>
                     </div>
+
                     {% if similar_kos %}
-                        <section class="card rounded-3xl border border-stone-200 bg-white p-6 shadow-sm">
-                            <div class="mb-5">
-                                <p class="text-xs font-bold uppercase tracking-widest text-brand-600">Pembanding pasar</p>
-                                <h3 class="mt-1 text-xl font-extrabold text-ink">Kos dengan karakteristik serupa</h3>
-                                <p class="mt-2 text-sm text-stone-500">
-                                    Perbandingan berdasarkan jarak, fasilitas AC, dan rating dari dataset kos Madiun.
-                                </p>
-                            </div>
-
-                            <div class="space-y-3">
+                        <section class="panel p-6">
+                            <h3 class="text-[15px] font-bold">Kos dengan karakteristik serupa</h3>
+                            <p class="mt-1 text-sm text-muted">Dibandingkan berdasarkan jarak, AC, dan rating dari dataset kos Madiun.</p>
+                            <ul class="mt-4 divide-y divide-line">
                                 {% for kos in similar_kos %}
-                                    <div class="rounded-2xl border border-stone-200 p-4">
-                                        <div class="flex flex-wrap items-start justify-between gap-2">
-                                            <div>
-                                                <h4 class="font-bold text-ink">{{ kos.nama }}</h4>
-                                                <p class="mt-1 text-xs text-stone-500">
-                                                    {{ kos.jarak_km }} km
-                                                    · {% if kos.ac == "ya" %}Ada AC{% else %}Tanpa AC{% endif %}
-                                                    · Rating {{ kos.rating }}
-                                                </p>
-                                            </div>
-                                            {% if forloop.first %}
-                                                <span class="rounded-full bg-lime-100 px-3 py-1 text-xs font-bold text-brand-700">Paling mirip</span>
-                                            {% endif %}
+                                    <li class="flex flex-wrap items-center justify-between gap-x-4 gap-y-1 py-3.5 first:pt-0 last:pb-0">
+                                        <div>
+                                            <p class="font-semibold">{{ kos.nama }}{% if forloop.first %}<span class="ml-2 text-xs font-semibold text-brand-dark">Paling mirip</span>{% endif %}</p>
+                                            <p class="num mt-0.5 text-xs text-muted">{{ kos.jarak_km }} km · {% if kos.ac == "ya" %}Ada AC{% else %}Tanpa AC{% endif %} · Rating {{ kos.rating }} · Kemiripan {{ kos.skor }}%</p>
                                         </div>
-
-                                        <div class="mt-3 flex flex-wrap items-end justify-between gap-2">
-                                            <p class="text-xl font-extrabold text-ink">
-                                                Rp{{ kos.harga|floatformat:"0g" }}
-                                                <span class="text-xs font-medium text-stone-500">/ bulan</span>
-                                            </p>
-                                            <span class="text-xs font-semibold text-brand-700">
-                                                Skor kemiripan {{ kos.skor }}%
-                                            </span>
-                                        </div>
-                                    </div>
+                                        <p class="num font-bold">Rp{{ kos.harga|floatformat:"0g" }}<span class="text-xs font-medium text-muted"> / bulan</span></p>
+                                    </li>
                                 {% endfor %}
-                            </div>
-
-                            <p class="mt-4 text-xs leading-relaxed text-stone-500">
-                                Data pembanding berasal dari dataset yang tersedia, bukan daftar kos yang telah diverifikasi.
-                                Skor kemiripan merupakan perhitungan berbobot, bukan tingkat akurasi prediksi.
-                            </p>
+                            </ul>
+                            <p class="mt-4 border-t border-line pt-3 text-xs leading-relaxed text-muted">Data pembanding berasal dari dataset yang tersedia, bukan daftar kos terverifikasi. Skor kemiripan adalah perhitungan berbobot, bukan tingkat akurasi prediksi.</p>
                         </section>
                     {% endif %}
 
                     {% include "prediction/_ai_card.html" with topik="prediksi" judul="Apa arti hasil ini?" %}
                 {% else %}
-                    <div class="card flex flex-col items-center justify-center border-dashed p-12 text-center">
-                        <div class="relative flex h-16 w-16 items-center justify-center rounded-full bg-brand-50 text-2xl text-brand-600">
-                            <span class="pulse-ring"></span><svg class="ic"><use href="#i-search"/></svg>
-                        </div>
-                        <p class="mt-5 text-base font-bold">Belum ada hasil</p>
-                        <p class="mt-1 max-w-sm text-sm text-stone-500">Isi formulir di sebelah kiri lalu tekan <b>Hitung Perkiraan Harga</b>. Hasil dan penjelasannya akan muncul di sini.</p>
+                    <div class="panel border-dashed p-12 text-center">
+                        <h3 class="font-bold">Belum ada hasil</h3>
+                        <p class="mx-auto mt-1 max-w-sm text-sm text-muted">Isi formulir, lalu tekan <b class="text-ink">Hitung perkiraan harga</b>. Perkiraan, kisaran wajar, dan penjelasannya tampil di sini.</p>
                     </div>
                 {% endif %}
             </div>
@@ -658,194 +379,200 @@
     </section>
 
     <!-- ===================================================== -->
-    <!-- TAB 3: GRAFIK PASAR                                    -->
+    <!-- GRAFIK PASAR                                           -->
     <!-- ===================================================== -->
     <section id="tab-grafik" class="tab-panel hidden space-y-6" data-panel="grafik">
-        <div>
-            <h2 class="text-2xl font-extrabold tracking-tight sm:text-3xl">Grafik <span class="font-serif text-[1.15em] font-normal italic">Pasar Kos</span></h2>
-            <p class="mt-1 text-sm text-stone-500">Setiap grafik dilengkapi penjelasan singkat supaya kamu langsung paham maksudnya.</p>
+        <div class="page-head">
+            <h2 class="page-title">Grafik pasar <em>kos</em></h2>
+            <p class="mt-1 text-sm text-muted">Setiap grafik menjawab satu pertanyaan dan dilengkapi penjelasan singkat.</p>
         </div>
 
-        <div class="grid items-start gap-6 lg:grid-cols-2">
-            <div class="card p-6">
-                <span class="inline-flex rounded-full bg-ink px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-lime">Pertanyaan 1</span>
-                <h3 class="mt-3 text-lg font-bold">Kos ber-AC lebih mahal, nggak?</h3>
-                <p class="text-xs text-stone-500">Rata-rata harga sewa kos dengan AC vs tanpa AC.</p>
-                <div class="mt-5 h-64"><canvas id="chartAc"></canvas></div>
-                <div id="acStats" class="mt-4 flex flex-wrap gap-2 text-xs font-semibold"></div>
+        <div class="grid items-start gap-6 lg:grid-cols-5">
+            <div class="panel p-6 lg:col-span-3">
+                <p class="label">Pertanyaan 1</p>
+                <h3 class="mt-1 text-lg font-bold">Apakah kos ber-AC lebih mahal?</h3>
+                <p class="text-sm text-muted">Rata-rata harga sewa kos dengan AC dibanding tanpa AC.</p>
+                <div class="mt-5 h-64"><canvas id="chartAc" role="img" aria-label="Diagram batang rata-rata harga kos dengan AC dan tanpa AC"></canvas></div>
+                <div id="acStats" class="mt-4 flex flex-wrap gap-x-5 gap-y-2 text-sm"></div>
             </div>
-            {% include "prediction/_ai_card.html" with topik="grafik_ac" judul="Penjelasan grafik AC" %}
+            <div class="lg:col-span-2">{% include "prediction/_ai_card.html" with topik="grafik_ac" judul="Penjelasan grafik AC" %}</div>
         </div>
 
-        <div class="grid items-start gap-6 lg:grid-cols-2">
-            <div class="card p-6">
-                <span class="inline-flex rounded-full bg-brand-500 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-white">Pertanyaan 2</span>
-                <h3 class="mt-3 text-lg font-bold">Makin dekat kota, makin mahal?</h3>
-                <p class="text-xs text-stone-500">Tiap titik = 1 kos. Arahkan kursor ke titik untuk melihat nama kos.</p>
-                <div class="mt-5 h-72"><canvas id="chartJarak"></canvas></div>
+        <div class="grid items-start gap-6 lg:grid-cols-5">
+            <div class="panel p-6 lg:col-span-3">
+                <p class="label">Pertanyaan 2</p>
+                <h3 class="mt-1 text-lg font-bold">Makin dekat ke kota, makin mahal?</h3>
+                <p class="text-sm text-muted">Satu titik mewakili satu kos. Arahkan kursor atau ketuk titik untuk melihat nama kos.</p>
+                <div class="mt-5 h-72"><canvas id="chartJarak" role="img" aria-label="Diagram sebar harga kos terhadap jarak ke pusat kota"></canvas></div>
             </div>
-            {% include "prediction/_ai_card.html" with topik="grafik_jarak" judul="Penjelasan grafik jarak" %}
+            <div class="lg:col-span-2">{% include "prediction/_ai_card.html" with topik="grafik_jarak" judul="Penjelasan grafik jarak" %}</div>
         </div>
 
-        <div class="grid items-start gap-6 lg:grid-cols-2">
-            <div class="card p-6">
-                <span class="inline-flex rounded-full bg-brand-200 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-ink">Pertanyaan 3</span>
-                <h3 class="mt-3 text-lg font-bold">Rating tinggi = harga mahal?</h3>
-                <p class="text-xs text-stone-500">Hubungan antara rating ulasan dan harga sewa.</p>
-                <div class="mt-5 h-72"><canvas id="chartRating"></canvas></div>
+        <div class="grid items-start gap-6 lg:grid-cols-5">
+            <div class="panel p-6 lg:col-span-3">
+                <p class="label">Pertanyaan 3</p>
+                <h3 class="mt-1 text-lg font-bold">Apakah rating tinggi berarti harga mahal?</h3>
+                <p class="text-sm text-muted">Hubungan antara rating ulasan dan harga sewa.</p>
+                <div class="mt-5 h-72"><canvas id="chartRating" role="img" aria-label="Diagram sebar harga kos terhadap rating"></canvas></div>
             </div>
-            {% include "prediction/_ai_card.html" with topik="grafik_rating" judul="Penjelasan grafik rating" %}
+            <div class="lg:col-span-2">{% include "prediction/_ai_card.html" with topik="grafik_rating" judul="Penjelasan grafik rating" %}</div>
         </div>
     </section>
 
     <!-- ===================================================== -->
-    <!-- TAB 4: RIWAYAT                                         -->
+    <!-- RIWAYAT                                                -->
     <!-- ===================================================== -->
     <section id="tab-riwayat" class="tab-panel hidden" data-panel="riwayat">
-        <div class="mb-6 flex flex-wrap items-end justify-between gap-3">
-            <div>
-                <h2 class="text-2xl font-extrabold tracking-tight sm:text-3xl">Riwayat <span class="font-serif text-[1.15em] font-normal italic">Cek Harga</span></h2>
-                <p class="mt-1 text-sm text-stone-500">Daftar perkiraan harga yang pernah kamu hitung (15 terbaru).</p>
+        <div class="page-head mb-6 flex flex-wrap items-end justify-between gap-3">
+            <div class="min-w-0">
+                <h2 class="page-title">Riwayat cek <em>harga</em></h2>
+                <p class="mt-1 text-sm text-muted">15 perkiraan terbaru dari total <b class="num text-ink">{{ total_predictions }}</b> prediksi.</p>
             </div>
-            <div class="flex flex-wrap items-center gap-3">
-                <span class="rounded-full bg-ink px-3.5 py-1.5 text-xs font-semibold text-white shadow-sm">Total <span class="text-lime">{{ total_predictions }}</span> kali</span>
-                {% if total_predictions %}
-                    <form method="POST" action="{% url 'delete_history' %}#riwayat"
-                          onsubmit="return confirm('Hapus semua riwayat prediksi dari database? Tindakan ini tidak bisa dibatalkan.')">
-                        {% csrf_token %}
-                        <button type="submit" class="rounded-full border border-rose-200 bg-white px-4 py-2 text-xs font-bold text-rose-700 transition hover:bg-rose-50">
-                            Hapus semua riwayat
-                        </button>
-                    </form>
-                {% endif %}
-            </div>
+            {% if total_predictions %}
+                <button type="button" id="openDelete" class="btn btn-ghost-danger btn-sm">Hapus semua riwayat</button>
+            {% endif %}
         </div>
-        <div class="card overflow-hidden">
+
+        <div class="panel overflow-hidden">
             {% if history %}
                 <div class="overflow-x-auto">
-                    <table class="w-full text-left text-sm">
-                        <thead class="bg-[#F3EEE4] text-[11px] font-bold uppercase tracking-wider text-stone-500">
-                            <tr><th class="px-5 py-3.5">Waktu</th><th class="px-5 py-3.5">Jarak</th><th class="px-5 py-3.5">AC</th><th class="px-5 py-3.5">Rating</th><th class="px-5 py-3.5 text-right">Perkiraan Harga</th></tr>
-                        </thead>
-                        <tbody class="divide-y divide-stone-100">
+                    <table class="data-table w-full min-w-[520px] text-left text-sm">
+                        <thead><tr><th class="px-5 py-3">Waktu</th><th class="px-5 py-3">Jarak</th><th class="px-5 py-3">AC</th><th class="px-5 py-3">Rating</th><th class="px-5 py-3 text-right">Perkiraan harga</th></tr></thead>
+                        <tbody class="divide-y divide-line">
                             {% for item in history %}
-                                <tr class="row-hover">
-                                    <td class="px-5 py-4 text-stone-500">{{ item.created_at|date:"d M Y, H:i" }}</td>
-                                    <td class="px-5 py-4 font-semibold"><span class="inline-flex items-center gap-1.5"><svg class="ic text-brand-600"><use href="#i-pin"/></svg>{{ item.jarak_km }} km</span></td>
-                                    <td class="px-5 py-4">
-                                        {% if item.ac == 'ya' %}<span class="inline-flex items-center gap-1.5 rounded-full bg-ink px-2.5 py-1 text-xs font-semibold text-white"><svg class="ic"><use href="#i-snow"/></svg>Ada AC</span>
-                                        {% else %}<span class="inline-flex items-center gap-1.5 rounded-full bg-stone-200/80 px-2.5 py-1 text-xs font-semibold text-stone-700"><svg class="ic"><use href="#i-fan"/></svg>Tanpa AC</span>{% endif %}
-                                    </td>
-                                    <td class="px-5 py-4"><span class="inline-flex items-center gap-1.5"><svg class="ic text-brand-500" style="fill:#B96843;stroke:none"><use href="#i-star-f"/></svg>{{ item.rating }}</span></td>
-                                    <td class="px-5 py-4 text-right font-extrabold tabular-nums">Rp{{ item.predicted_price|floatformat:"0g" }}</td>
+                                <tr>
+                                    <td class="num px-5 py-3.5 text-muted">{{ item.created_at|date:"d M Y, H:i" }}</td>
+                                    <td class="num px-5 py-3.5">{{ item.jarak_km }} km</td>
+                                    <td class="px-5 py-3.5">{% if item.ac == 'ya' %}Ada AC{% else %}<span class="text-muted">Tanpa AC</span>{% endif %}</td>
+                                    <td class="num px-5 py-3.5"><span class="inline-flex items-center gap-1"><svg class="ic text-brand"><use href="#i-star-f"/></svg>{{ item.rating }}</span></td>
+                                    <td class="num px-5 py-3.5 text-right font-bold">Rp{{ item.predicted_price|floatformat:"0g" }}</td>
                                 </tr>
                             {% endfor %}
                         </tbody>
                     </table>
                 </div>
             {% else %}
-                <div class="p-14 text-center text-sm text-stone-500">Belum ada riwayat. Coba hitung harga di tab <b>Cek Harga Kos</b>.</div>
+                <div class="p-12 text-center">
+                    <h3 class="font-bold">Belum ada riwayat</h3>
+                    <p class="mt-1 text-sm text-muted">Hitung harga di tab <b class="text-ink">Cek Harga Kos</b>, hasilnya akan tersimpan di sini.</p>
+                    <button type="button" data-tab-link="cek-harga" class="btn btn-primary btn-sm mt-4">Buat prediksi pertama</button>
+                </div>
             {% endif %}
         </div>
+
+        {% if total_predictions %}
+            <dialog id="deleteDialog" class="dlg" aria-labelledby="deleteTitle">
+                <form method="POST" action="{% url 'delete_history' %}#riwayat">
+                    {% csrf_token %}
+                    <h3 id="deleteTitle" class="text-lg font-bold">Hapus semua riwayat?</h3>
+                    <p class="mt-2 text-sm leading-relaxed text-muted">{{ total_predictions }} prediksi akan dihapus permanen dari database. Tindakan ini tidak bisa dibatalkan.</p>
+                    <div class="mt-6 flex justify-end gap-2">
+                        <button type="button" data-close class="btn btn-secondary btn-sm">Batal</button>
+                        <button type="submit" class="btn btn-danger btn-sm">Ya, hapus semua</button>
+                    </div>
+                </form>
+            </dialog>
+        {% endif %}
     </section>
 
     <!-- ===================================================== -->
-    <!-- TAB 5: TENTANG MODEL                                   -->
+    <!-- TENTANG MODEL                                          -->
     <!-- ===================================================== -->
     <section id="tab-tentang" class="tab-panel hidden space-y-6" data-panel="tentang">
-        <div>
-            <h2 class="text-2xl font-extrabold tracking-tight sm:text-3xl">Tentang <span class="font-serif text-[1.15em] font-normal italic">Model Prediksi</span></h2>
-            <p class="mt-1 text-sm text-stone-500">Seberapa akurat perkiraannya? Berikut penjelasan jujurnya.</p>
+        <div class="page-head">
+            <h2 class="page-title">Tentang model <em>prediksi</em></h2>
+            <p class="mt-1 text-sm text-muted">Seberapa akurat perkiraannya? Berikut penjelasan jujurnya.</p>
         </div>
 
-        <div class="stg grid grid-cols-2 gap-4 lg:grid-cols-4">
-            <div class="card card-hover relative overflow-hidden p-5" style="background:var(--ink);border-color:var(--ink);color:#fff">
-                <div class="pointer-events-none absolute -right-8 -top-8 h-28 w-28 rounded-full bg-brand-500/25 blur-2xl"></div>
-                <p class="eyebrow relative" style="color:#9C9484">Metode yang dipakai</p>
-                <p class="relative mt-3 text-lg font-extrabold leading-snug text-lime">{{ metadata.model_name|default:"-" }}</p>
-                <p class="relative mt-1 text-xs text-stone-400">rumus yang dipelajari dari data</p>
+        <div class="kpi-strip">
+            <div>
+                <p class="label">Metode</p>
+                <p class="mt-2 text-lg font-bold leading-snug">{{ metadata.model_name|default:"-" }}</p>
+                <p class="mt-1 text-xs text-muted">rumus yang dipelajari dari data</p>
             </div>
-            <div class="card card-hover p-5">
-                <p class="eyebrow">Rata-rata meleset</p>
-                <p class="mt-3 text-lg font-extrabold tabular-nums">± Rp{{ metadata.mae|floatformat:"0g" }}</p>
-                <p class="mt-1 text-xs text-stone-500">selisih tebakan vs harga asli (MAE)</p>
+            <div>
+                <p class="label">Rata-rata meleset (MAE)</p>
+                <p class="num mt-2 text-lg font-bold">± Rp{{ metadata.mae|floatformat:"0g" }}</p>
+                <p class="mt-1 text-xs text-muted">selisih tebakan dan harga asli</p>
             </div>
-            <div class="card card-hover flex items-center justify-between gap-3 p-5">
-                <div>
-                    <p class="eyebrow">Skor ketepatan (R²)</p>
-                    <p class="mt-3 text-xs leading-relaxed text-stone-500">1 = sempurna, ≤ 0 = masih lemah</p>
-                </div>
+            <div class="flex items-center justify-between gap-3">
+                <div><p class="label">Skor ketepatan (R²)</p><p class="mt-2 text-xs leading-relaxed text-muted">1 = sempurna, 0 atau kurang = masih lemah</p></div>
                 <div class="gauge" data-value="{{ metadata.r2|unlocalize }}"><span>{{ metadata.r2|floatformat:2 }}</span></div>
             </div>
-            <div class="card card-hover p-5">
-                <p class="eyebrow">Data belajar / uji</p>
-                <p class="mt-3 text-lg font-extrabold tabular-nums">{{ metadata.training_rows }} / {{ metadata.testing_rows }} kos</p>
-                <div class="split mt-2.5" data-split="{{ metadata.training_rows|unlocalize }},{{ metadata.testing_rows|unlocalize }}"><i></i></div>
-                <p class="mt-1.5 text-xs text-stone-500">makin banyak data, makin akurat</p>
+            <div>
+                <p class="label">Data belajar / uji</p>
+                <p class="num mt-2 text-lg font-bold">{{ metadata.training_rows }} / {{ metadata.testing_rows }} kos</p>
+                <div class="split mt-3" data-split="{{ metadata.training_rows|unlocalize }},{{ metadata.testing_rows|unlocalize }}"><i></i></div>
             </div>
         </div>
 
         <div class="grid items-start gap-6 lg:grid-cols-2">
             {% include "prediction/_ai_card.html" with topik="model" judul="Seberapa bisa dipercaya?" %}
-            <div class="card p-6">
-                <p class="flex items-center gap-2 text-sm font-bold"><span class="flex h-7 w-7 items-center justify-center rounded-full bg-lime text-ink"><svg class="ic"><use href="#i-spark"/></svg></span>Kamus istilah singkat</p>
-                <dl class="mt-5 divide-y divide-stone-100 text-sm">
-                    <div class="py-3 first:pt-0"><dt class="font-bold">Prediksi</dt><dd class="mt-0.5 text-stone-500">Tebakan harga berdasarkan pola dari data kos yang sudah ada.</dd></div>
-                    <div class="py-3"><dt class="font-bold">MAE (rata-rata meleset)</dt><dd class="mt-0.5 text-stone-500">Rata-rata selisih antara harga tebakan dan harga asli, dalam rupiah. Makin kecil makin bagus.</dd></div>
-                    <div class="py-3"><dt class="font-bold">R² (skor ketepatan)</dt><dd class="mt-0.5 text-stone-500">Menunjukkan seberapa baik model menjelaskan naik-turunnya harga. Mendekati 1 berarti sangat baik.</dd></div>
-                    <div class="py-3"><dt class="font-bold">Korelasi</dt><dd class="mt-0.5 text-stone-500">Angka −1 sampai 1 yang menunjukkan apakah dua hal bergerak searah (positif), berlawanan (negatif), atau tidak berhubungan (≈ 0).</dd></div>
-                    <div class="py-3 last:pb-0"><dt class="font-bold">Penjelasan berbantuan AI</dt><dd class="mt-0.5 text-stone-500">Penjelasan dibuat otomatis dengan bantuan AI (Groq) berdasarkan angka di dashboard ini. Hasilnya bisa keliru, jadi tetap periksa data aslinya.</dd></div>
+            <div class="panel p-6">
+                <h3 class="text-[15px] font-bold">Kamus istilah singkat</h3>
+                <dl class="mt-4 divide-y divide-line text-sm">
+                    <div class="py-3 first:pt-0"><dt class="font-semibold">Prediksi</dt><dd class="mt-0.5 text-muted">Tebakan harga berdasarkan pola dari data kos yang sudah ada.</dd></div>
+                    <div class="py-3"><dt class="font-semibold">MAE (rata-rata meleset)</dt><dd class="mt-0.5 text-muted">Rata-rata selisih antara harga tebakan dan harga asli, dalam rupiah. Makin kecil makin baik.</dd></div>
+                    <div class="py-3"><dt class="font-semibold">R² (skor ketepatan)</dt><dd class="mt-0.5 text-muted">Seberapa baik model menjelaskan naik-turunnya harga. Makin mendekati 1 makin baik.</dd></div>
+                    <div class="py-3"><dt class="font-semibold">Korelasi</dt><dd class="mt-0.5 text-muted">Angka −1 sampai 1: searah (positif), berlawanan (negatif), atau tidak berhubungan (mendekati 0).</dd></div>
+                    <div class="py-3 last:pb-0"><dt class="font-semibold">Penjelasan berbantuan AI</dt><dd class="mt-0.5 text-muted">Dibuat otomatis dengan bantuan AI (Groq) dari angka di dashboard ini. Bisa keliru, jadi periksa data aslinya.</dd></div>
                 </dl>
             </div>
+        </div>
+
+        <div class="panel p-6">
+            <h3 class="text-[15px] font-bold">Batasan yang perlu kamu tahu</h3>
+            <ul class="mt-3 grid gap-x-8 gap-y-3 text-sm text-muted md:grid-cols-2">
+                <li>Perkiraan hanya memakai tiga masukan: jarak ke pusat kota, AC, dan rating. Faktor lain seperti luas kamar, kamar mandi, atau fasilitas tambahan tidak ikut dihitung.</li>
+                <li>Model belajar dari {{ metadata.training_rows }} kos dan diuji pada {{ metadata.testing_rows }} kos. Dataset kecil membuat hasil bisa meleset pada kos yang tidak umum.</li>
+                <li>Hasilnya perkiraan, bukan harga resmi. Selalu konfirmasi harga dan kondisi langsung ke pemilik kos.</li>
+                <li>Data pembanding dan rekomendasi berasal dari dataset yang tersedia, bukan daftar kos terverifikasi.</li>
+            </ul>
         </div>
     </section>
 </main>
 
-<footer class="mt-10 border-t border-[#E4DED2] py-7 text-center text-xs text-stone-400">
-    GusSearch - Prediksi Kost By Ai
+<footer class="mt-10 border-t border-line py-7 text-center text-xs text-muted">
+    GusSearch Kost · Prediksi harga kos Kota Madiun
 </footer>
 
 {{ chart_data|json_script:"chart-data" }}
 
 <script>
 (() => {
-    const budgetInput = document.getElementById('budget');
-    if (budgetInput) {
-        const formatBudget = (value) => {
-            const digits = value.replace(/\D/g, '');
-            return digits.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
-        };
-        const formatBudgetInput = () => {
+    // ---------- Format budget (Cari Kos) ----------
+    document.querySelectorAll('input[name="budget"]').forEach((budgetInput) => {
+        const formatBudget = (v) => v.replace(/\D/g, '').replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+        budgetInput.addEventListener('input', () => {
             const cursor = budgetInput.selectionStart;
-            const digitsBeforeCursor = budgetInput.value.slice(0, cursor).replace(/\D/g, '').length;
+            const digitsBefore = budgetInput.value.slice(0, cursor).replace(/\D/g, '').length;
             budgetInput.value = formatBudget(budgetInput.value);
-            let nextCursor = 0, digitsSeen = 0;
-            while (nextCursor < budgetInput.value.length && digitsSeen < digitsBeforeCursor) {
-                if (/\d/.test(budgetInput.value[nextCursor])) digitsSeen++;
-                nextCursor++;
-            }
-            budgetInput.setSelectionRange(nextCursor, nextCursor);
-        };
-        budgetInput.addEventListener('input', formatBudgetInput);
+            let next = 0, seen = 0;
+            while (next < budgetInput.value.length && seen < digitsBefore) { if (/\d/.test(budgetInput.value[next])) seen++; next++; }
+            budgetInput.setSelectionRange(next, next);
+        });
         budgetInput.value = formatBudget(budgetInput.value);
-    }
+    });
 
     const chartData = JSON.parse(document.getElementById('chart-data').textContent);
     const rupiah = (v) => 'Rp' + Math.round(v).toLocaleString('id-ID');
     const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const INK = '#241B17', CORAL = '#B96843';
-    Chart.defaults.font.family = '"Plus Jakarta Sans"';
-    Chart.defaults.color = '#78716C';
+    const NAVY = '#111827', TEAL = '#0D9488';
+    Chart.defaults.font.family = 'Inter, system-ui, sans-serif';
+    Chart.defaults.color = '#64748B';
 
-    // ---------- Sinkron slider & input ----------
+    // ---------- Sinkron slider & input + validasi ----------
     const setFill = (el) => {
         const min = parseFloat(el.min) || 0, max = parseFloat(el.max) || 100;
-        const p = Math.max(0, Math.min(100, ((parseFloat(el.value) || 0) - min) / (max - min) * 100));
-        el.style.setProperty('--p', p + '%');
+        el.style.setProperty('--p', Math.max(0, Math.min(100, ((parseFloat(el.value) || 0) - min) / (max - min) * 100)) + '%');
     };
-    const updateStars = (v) => {
-        const f = document.getElementById('starFill');
-        if (f) f.style.width = (Math.max(0, Math.min(5, v)) / 5 * 100) + '%';
+    const validate = (el) => {
+        if (el.type !== 'number') return true;
+        const v = parseFloat(el.value), bad = isNaN(v) || v < parseFloat(el.min) || v > parseFloat(el.max);
+        el.setAttribute('aria-invalid', bad ? 'true' : 'false');
+        const hint = document.getElementById(el.dataset.sync + 'Hint');
+        if (hint) hint.classList.toggle('hidden', !bad);
+        return !bad;
     };
     document.querySelectorAll('[data-sync]').forEach((el) => {
         el.addEventListener('input', () => {
@@ -854,78 +581,74 @@
                 if (o !== el) o.value = el.value;
                 if (o.type === 'range') setFill(o);
             });
-            const val = parseFloat(el.value || 0);
-            document.getElementById(key + 'Display').textContent = val.toFixed(1);
-            if (key === 'rating') updateStars(val);
+            const val = parseFloat(el.value);
+            if (!isNaN(val)) document.getElementById(key + 'Display').textContent = val.toFixed(1);
+            validate(document.getElementById(key + 'Input'));
         });
     });
     document.querySelectorAll('input[type=range]').forEach(setFill);
-    updateStars(parseFloat(document.getElementById('ratingInput').value) || 0);
+    ['jarak', 'rating'].forEach((k) => {
+        const el = document.getElementById(k + 'Input');
+        if (el) document.getElementById(k + 'Display').textContent = (parseFloat(el.value) || 0).toFixed(1);
+    });
 
-    // Tombol hitung: tampilkan status sibuk
+    // Submit: cek validasi dulu, lalu tampilkan status menghitung
     const form = document.getElementById('predictForm');
-    if (form) form.addEventListener('submit', () => {
+    if (form) form.addEventListener('submit', (e) => {
+        const ok = ['jarakInput', 'ratingInput'].map((id) => validate(document.getElementById(id))).every(Boolean);
+        if (!ok) { e.preventDefault(); form.querySelector('[aria-invalid="true"]').focus(); return; }
         setTimeout(() => {
-            document.getElementById('submitBtn').classList.add('is-busy');
+            const b = document.getElementById('submitBtn');
+            b.setAttribute('aria-busy', 'true'); b.classList.add('is-busy');
             document.getElementById('submitLabel').textContent = 'Menghitung…';
         }, 0);
     });
 
     // ---------- Simulasi harga ----------
     const simulateBtn = document.getElementById('simulateBtn');
-
     if (simulateBtn && form) {
         simulateBtn.addEventListener('click', async () => {
             const resultBox = document.getElementById('simulationResult');
             const originalEl = document.getElementById('simulationOriginal');
             const newEl = document.getElementById('simulationNew');
-            const differenceEl = document.getElementById('simulationDifference');
-
+            const diffEl = document.getElementById('simulationDifference');
             const csrfToken = form.querySelector('[name="csrfmiddlewaretoken"]').value;
             const formData = new FormData(form);
 
             simulateBtn.disabled = true;
-            simulateBtn.textContent = 'Menghitung simulasi...';
+            simulateBtn.textContent = 'Menghitung simulasi…';
             resultBox.classList.remove('hidden');
-            differenceEl.textContent = 'Sedang menghitung skenario...';
-
+            diffEl.className = 'mt-3 text-sm font-medium';
+            diffEl.textContent = 'Sedang menghitung skenario…';
             try {
                 const response = await fetch("{% url 'api_simulate' %}", {
                     method: 'POST',
-                    headers: {
-                        'X-CSRFToken': csrfToken,
-                        'X-Requested-With': 'XMLHttpRequest',
-                    },
-                    body: formData,
-                    credentials: 'same-origin',
+                    headers: { 'X-CSRFToken': csrfToken, 'X-Requested-With': 'XMLHttpRequest' },
+                    body: formData, credentials: 'same-origin',
                 });
-
                 const data = await response.json();
-
-                if (!response.ok || !data.ok) {
-                    throw new Error(data.error || 'Simulasi gagal dihitung.');
-                }
-
+                if (!response.ok || !data.ok) throw new Error(data.error || 'Simulasi gagal dihitung.');
                 originalEl.textContent = rupiah(data.original_price);
                 newEl.textContent = rupiah(data.simulated_price);
-
-                if (data.difference > 0) {
-                    differenceEl.textContent =
-                        `Skenario baru lebih mahal ${rupiah(data.difference)} per bulan.`;
-                } else if (data.difference < 0) {
-                    differenceEl.textContent =
-                        `Skenario baru lebih murah ${rupiah(Math.abs(data.difference))} per bulan.`;
-                } else {
-                    differenceEl.textContent =
-                        'Estimasi harga skenario baru sama dengan prediksi awal.';
-                }
+                diffEl.textContent = data.difference > 0 ? `Skenario baru lebih mahal ${rupiah(data.difference)} per bulan.`
+                    : data.difference < 0 ? `Skenario baru lebih murah ${rupiah(Math.abs(data.difference))} per bulan.`
+                    : 'Estimasi harga skenario baru sama dengan prediksi awal.';
             } catch (error) {
-                differenceEl.textContent = error.message;
+                diffEl.className = 'mt-3 text-sm font-medium text-red-700';
+                diffEl.textContent = error.message;
             } finally {
                 simulateBtn.disabled = false;
-                simulateBtn.textContent = 'Simulasikan Perubahan';
+                simulateBtn.textContent = 'Simulasikan perubahan';
             }
         });
+    }
+
+    // ---------- Dialog hapus riwayat ----------
+    const dlg = document.getElementById('deleteDialog');
+    if (dlg) {
+        document.getElementById('openDelete').addEventListener('click', () => dlg.showModal());
+        dlg.querySelector('[data-close]').addEventListener('click', () => dlg.close());
+        dlg.addEventListener('click', (e) => { if (e.target === dlg) dlg.close(); });
     }
 
     // ---------- Penjelasan AI ----------
@@ -938,7 +661,7 @@
             const d = `style="--i:${i++}"`;
             if (/^[-•*]\s+/.test(line)) {
                 if (!inList) { html += '<ul class="mt-3 space-y-2">'; inList = true; }
-                html += `<li class="ai-line flex gap-2.5" ${d}><span class="mt-[7px] h-1.5 w-1.5 shrink-0 rounded-full bg-brand-500"></span><span>${clean.replace(/^[-•*]\s+/, '')}</span></li>`;
+                html += `<li class="ai-line flex gap-2.5" ${d}><span class="mt-[9px] h-1.5 w-1.5 shrink-0 rounded-full bg-brand"></span><span>${clean.replace(/^[-•*]\s+/, '')}</span></li>`;
             } else {
                 if (inList) { html += '</ul>'; inList = false; }
                 html += `<p class="ai-line mt-2.5 first:mt-0" ${d}>${clean}</p>`;
@@ -946,13 +669,11 @@
         });
         return html + (inList ? '</ul>' : '');
     }
-
     async function loadInsight(card, refresh = false) {
-        const body = card.querySelector('.ai-body');
-        const meta = card.querySelector('.ai-meta');
+        const body = card.querySelector('.ai-body'), meta = card.querySelector('.ai-meta');
         card.classList.add('is-loading');
-        body.innerHTML = '<div class="space-y-2.5"><div class="shimmer h-3 w-11/12 rounded-full"></div><div class="shimmer h-3 w-9/12 rounded-full"></div><div class="shimmer h-3 w-10/12 rounded-full"></div></div>';
-        meta.textContent = 'Sedang menyiapkan penjelasan...';
+        body.innerHTML = '<div class="space-y-2.5"><div class="shimmer h-3 w-11/12 rounded"></div><div class="shimmer h-3 w-9/12 rounded"></div><div class="shimmer h-3 w-10/12 rounded"></div></div>';
+        meta.textContent = 'Sedang menyiapkan penjelasan…';
         try {
             const res = await fetch(`{% url 'api_insight' %}?topik=${card.dataset.topik}${refresh ? '&refresh=1' : ''}`);
             const data = await res.json();
@@ -960,7 +681,7 @@
             body.innerHTML = renderAiText(data.text);
             meta.textContent = `Model ${data.model} · ${data.generated_at}${data.cached ? ' · tersimpan' : ''}`;
         } catch (err) {
-            body.innerHTML = `<p class="rounded-xl bg-rose-50 px-3 py-2 text-xs text-rose-700">⚠️ ${escapeHtml(err.message)}</p>`;
+            body.innerHTML = `<p class="flex items-start gap-2 rounded-lg bg-red-50 px-3 py-2 text-sm text-red-700"><svg class="ic mt-0.5"><use href="#i-alert"/></svg><span>${escapeHtml(err.message)} Tekan “Jelaskan ulang” untuk mencoba lagi.</span></p>`;
             meta.textContent = 'Penjelasan belum bisa dimuat';
         }
         card.classList.remove('is-loading');
@@ -976,7 +697,7 @@
         const fmt = (v) => pre + v.toLocaleString('id-ID', { minimumFractionDigits: dec, maximumFractionDigits: dec });
         cancelAnimationFrame(el._raf);
         if (reduce) { el.textContent = fmt(target); return; }
-        const dur = 1100, t0 = performance.now(), ease = (t) => 1 - Math.pow(2, -10 * t);
+        const dur = 900, t0 = performance.now(), ease = (t) => 1 - Math.pow(2, -10 * t);
         const step = (now) => {
             const t = Math.min(1, (now - t0) / dur);
             el.textContent = fmt(target * ease(t));
@@ -1013,86 +734,71 @@
     }
 
     // ---------- Grafik ----------
-    const tooltip = { backgroundColor: INK, padding: 12, cornerRadius: 14, titleFont: { weight: 700 }, boxPadding: 4 };
-    const gridStyle = { color: 'rgba(36,27,23,.07)', borderDash: [4, 4] };
-    const yRupiah = { grid: gridStyle, border: { display: false }, ticks: { callback: (v) => 'Rp' + v / 1000 + 'rb' } };
+    const tooltip = { backgroundColor: NAVY, padding: 12, cornerRadius: 8, titleFont: { weight: 600 }, boxPadding: 4 };
+    const gridStyle = { color: '#E2E8F0' };
+    const yRupiah = { grid: gridStyle, border: { display: false }, title: { display: true, text: 'Harga sewa per bulan', font: { weight: 600 } },
+                      ticks: { callback: (v) => 'Rp' + v / 1000 + 'rb' } };
     let chartsReady = false;
 
     function scatterSets(xKey) {
         const make = (ac, label, color) => ({
-            label, backgroundColor: color, borderColor: '#FBF7F2', borderWidth: 2, pointRadius: 6, pointHoverRadius: 9, pointHoverBorderWidth: 3,
+            label, backgroundColor: color, borderColor: '#FFFFFF', borderWidth: 1.5, pointRadius: 5, pointHoverRadius: 8,
             data: chartData.points.filter((p) => p.ac === ac).map((p) => ({ x: p[xKey], y: p.harga, nama: p.nama })),
         });
-        return [make('ya', 'Ada AC', INK), make('tidak', 'Tanpa AC', CORAL)];
+        return [make('ya', 'Ada AC', NAVY), make('tidak', 'Tanpa AC', TEAL)];
     }
 
     function initCharts() {
         if (chartsReady) return;
         chartsReady = true;
+        const anim = reduce ? false : { duration: 700, easing: 'easeOutCubic' };
 
         new Chart(document.getElementById('chartAc'), {
             type: 'bar',
-            data: { labels: ['Ada AC', 'Tanpa AC'], datasets: [{ data: chartData.ac, backgroundColor: [INK, CORAL], borderRadius: 999, borderSkipped: false, barPercentage: 0.5 }] },
-            options: { responsive: true, maintainAspectRatio: false, animation: { duration: 1000, easing: 'easeOutQuart' },
+            data: { labels: ['Ada AC', 'Tanpa AC'], datasets: [{ data: chartData.ac, backgroundColor: [NAVY, TEAL], borderRadius: 4, borderSkipped: false, barPercentage: 0.45 }] },
+            options: { responsive: true, maintainAspectRatio: false, animation: anim,
                 plugins: { legend: { display: false }, tooltip: { ...tooltip, callbacks: { label: (c) => rupiah(c.raw) + ' / bulan' } } },
-                scales: { y: { ...yRupiah, beginAtZero: true }, x: { grid: { display: false }, border: { display: false }, ticks: { font: { weight: 700 } } } } },
+                scales: { y: { ...yRupiah, beginAtZero: true }, x: { grid: { display: false }, border: { display: false }, ticks: { font: { weight: 600 } } } } },
         });
 
         const stats = document.getElementById('acStats');
         if (stats && chartData.ac && chartData.ac.length === 2) {
             const [a, b] = chartData.ac, diff = a - b, pct = b ? Math.abs(diff / b * 100) : 0;
+            const dot = (c) => `<i class="h-2.5 w-2.5 rounded-sm" style="background:${c}"></i>`;
             stats.innerHTML =
-                `<span class="inline-flex items-center gap-1.5 rounded-full bg-ink px-3 py-1.5 text-white"><i class="h-2 w-2 rounded-full bg-white"></i>Ada AC ${rupiah(a)}</span>` +
-                `<span class="inline-flex items-center gap-1.5 rounded-full bg-brand-500 px-3 py-1.5 text-white"><i class="h-2 w-2 rounded-full bg-white"></i>Tanpa AC ${rupiah(b)}</span>` +
-                `<span class="inline-flex items-center rounded-full bg-lime px-3 py-1.5 text-ink">Selisih ${rupiah(Math.abs(diff))} (${pct.toFixed(0)}%)</span>`;
+                `<span class="inline-flex items-center gap-2">${dot(NAVY)}Ada AC <b class="num">${rupiah(a)}</b></span>` +
+                `<span class="inline-flex items-center gap-2">${dot(TEAL)}Tanpa AC <b class="num">${rupiah(b)}</b></span>` +
+                `<span class="text-muted">Selisih <b class="num text-ink">${rupiah(Math.abs(diff))}</b> (${pct.toFixed(0)}%)</span>`;
         }
 
         const scatterOptions = (xTitle, xFmt) => ({
-            responsive: true, maintainAspectRatio: false,
-            animation: { duration: 800, easing: 'easeOutCubic', delay: (c) => (c.type === 'data' && c.mode === 'default' ? c.dataIndex * 10 : 0) },
+            responsive: true, maintainAspectRatio: false, animation: anim,
             plugins: { legend: { position: 'bottom', labels: { usePointStyle: true, boxWidth: 8, padding: 18 } },
                 tooltip: { ...tooltip, callbacks: { title: (items) => items[0].raw.nama, label: (c) => `${xFmt(c.raw.x)} · ${rupiah(c.raw.y)}` } } },
-            scales: { y: yRupiah, x: { title: { display: true, text: xTitle, font: { weight: 700 } }, grid: gridStyle, border: { display: false } } },
+            scales: { y: yRupiah, x: { title: { display: true, text: xTitle, font: { weight: 600 } }, grid: gridStyle, border: { display: false } } },
         });
-
         new Chart(document.getElementById('chartJarak'), { type: 'scatter', data: { datasets: scatterSets('jarak') }, options: scatterOptions('Jarak ke pusat kota (km)', (x) => x + ' km') });
-        new Chart(document.getElementById('chartRating'), { type: 'scatter', data: { datasets: scatterSets('rating') }, options: scatterOptions('Rating kos', (x) => '⭐ ' + x) });
+        new Chart(document.getElementById('chartRating'), { type: 'scatter', data: { datasets: scatterSets('rating') }, options: scatterOptions('Rating kos (skala 5)', (x) => 'Rating ' + x) });
     }
 
-    // ---------- Navigasi Tab ----------
+    // ---------- Navigasi tab ----------
     const tabs = ['beranda', 'cek-harga', 'cari-kos', 'grafik', 'riwayat', 'tentang'];
-    const deskNav = document.getElementById('deskNav');
-    function moveIndicator(name) {
-        const btn = deskNav.querySelector(`[data-tab="${name}"]`), ind = deskNav.querySelector('.tab-indicator');
-        if (!btn || !btn.offsetWidth) return;
-        ind.style.width = btn.offsetWidth + 'px';
-        ind.style.transform = `translateX(${btn.offsetLeft}px)`;
-    }
-    let currentTab = 'beranda';
     function showTab(name, push = true) {
         if (!tabs.includes(name)) name = 'beranda';
-        currentTab = name;
         document.querySelectorAll('[data-panel]').forEach((p) => p.classList.toggle('hidden', p.dataset.panel !== name));
         document.querySelectorAll('.tab-btn').forEach((b) => b.setAttribute('aria-selected', b.dataset.tab === name));
         if (push) history.replaceState(null, '', '#' + name);
-        moveIndicator(name);
         const mb = document.querySelector(`.mob-nav [data-tab="${name}"]`);
-        if (mb && mb.offsetWidth) mb.scrollIntoView({ inline: 'center', block: 'nearest', behavior: 'smooth' });
+        if (mb && mb.offsetWidth) mb.scrollIntoView({ inline: 'center', block: 'nearest', behavior: reduce ? 'auto' : 'smooth' });
         if (name === 'grafik') initCharts();
         const panel = document.querySelector(`[data-panel="${name}"]`);
         playPanel(panel);
         panel.querySelectorAll('.ai-card').forEach((c) => { if (!c.dataset.loaded) loadInsight(c); });
-        window.scrollTo({ top: 0, behavior: 'smooth' });
+        window.scrollTo({ top: 0, behavior: reduce ? 'auto' : 'smooth' });
     }
     document.querySelectorAll('[data-tab]').forEach((b) => b.addEventListener('click', () => showTab(b.dataset.tab)));
     document.querySelectorAll('[data-tab-link]').forEach((b) => b.addEventListener('click', (e) => { e.preventDefault(); showTab(b.dataset.tabLink); }));
     window.addEventListener('hashchange', () => showTab(location.hash.slice(1), false));
-    window.addEventListener('resize', () => moveIndicator(currentTab));
-    if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => moveIndicator(currentTab));
-
-    // Bayangan navbar saat di-scroll
-    const navShell = document.getElementById('navShell');
-    window.addEventListener('scroll', () => navShell.classList.toggle('is-scrolled', window.scrollY > 8), { passive: true });
 
     showTab(location.hash.slice(1) || 'beranda', false);
 })();

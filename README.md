@@ -25,6 +25,7 @@ Aplikasi web Django yang memperkirakan harga sewa bulanan dengan machine learnin
 - [Struktur Projek](#struktur-projek)
 - [Memulai](#memulai)
 - [Konfigurasi](#konfigurasi)
+- [Deployment gratis](#deployment-gratis-render--neon)
 - [Cara Penggunaan](#cara-penggunaan)
 - [Pipeline Machine Learning](#pipeline-machine-learning)
 - [Referensi API](#referensi-api)
@@ -61,7 +62,7 @@ Model machine learning menghasilkan perkiraan harga dan kisaran indikatif. Pengg
 - **Grafik interaktif**: harga AC vs non-AC, harga vs jarak, dan harga vs rating (nama kos tampil saat kursor diarahkan).
 - **Simulasi prediksi**: ubah jarak, AC, atau rating untuk membandingkan perkiraan dengan hasil prediksi terakhir.
 - **Penjelasan AI opsional**: insight per bagian dengan cache server 30 menit dan tombol *Jelaskan ulang*; memerlukan API key Groq.
-- **Riwayat prediksi**: prediksi disimpan di SQLite; dasbor menampilkan 15 terbaru dan menyediakan aksi untuk menghapus seluruh riwayat.
+- **Riwayat prediksi**: prediksi disimpan di database; dasbor menampilkan 15 terbaru dan menyediakan aksi untuk menghapus seluruh riwayat.
 - **Kartu model yang transparan**: MAE, R², dan jumlah data latih/uji ditampilkan beserta kamus istilah.
 - **Responsif**: nyaman di desktop maupun ponsel, menghormati pengaturan *reduced motion*.
 
@@ -76,7 +77,7 @@ flowchart LR
     U -->|POST /history/delete/| V
     V --> P[services/predictor.py]
     P --> M[(kos_price_model.joblib)]
-    V --> DB[(SQLite: PredictionHistory)]
+    V --> DB[(SQLite lokal / PostgreSQL Neon)]
     V --> A[services/ai_insight.py]
     A -->|HTTPS| G[Groq LLM API]
     D[(data/kos_madiun.csv)] --> T[ml/train_model.py]
@@ -92,7 +93,7 @@ flowchart LR
 | Backend | Django (Python) |
 | Machine learning | scikit-learn, joblib |
 | Penjelasan LLM | Groq API |
-| Database | SQLite |
+| Database | SQLite (lokal), PostgreSQL (hosting) |
 | Frontend | Template Django, Tailwind CSS (CDN), Chart.js, CSS/JavaScript aplikasi |
 
 ## Struktur Projek
@@ -171,6 +172,9 @@ Salin `.env.example` menjadi `.env` di root projek. `SECRET_KEY` wajib diisi aga
 
 ```env
 SECRET_KEY=ganti-dengan-secret-key-acak
+DEBUG=True
+ALLOWED_HOSTS=localhost,127.0.0.1
+DATABASE_URL=
 GROQ_API_KEY=
 GROQ_MODEL=openai/gpt-oss-120b
 ```
@@ -178,10 +182,25 @@ GROQ_MODEL=openai/gpt-oss-120b
 | Variabel | Wajib | Keterangan |
 |---|---|---|
 | `SECRET_KEY` | Ya | Secret Django; jangan gunakan nilai contoh pada deployment |
+| `DEBUG` | Tidak | `True` untuk pengembangan lokal; Render mengaturnya ke `False` |
+| `ALLOWED_HOSTS` | Tidak | Host yang diizinkan; Render memakai hostname yang disediakan otomatis |
+| `DATABASE_URL` | Tidak | URL PostgreSQL; kosong berarti memakai SQLite lokal |
 | `GROQ_API_KEY` | Tidak | API key Groq; wajib hanya jika ingin menggunakan penjelasan AI |
 | `GROQ_MODEL` | Tidak | Nama model Groq; default `openai/gpt-oss-120b` |
 
-File `.env` dibaca oleh `config/settings.py` dan diabaikan Git. Restart server setelah mengubahnya.
+File `.env` dibaca oleh `config/settings.py` dan diabaikan Git. `DATABASE_URL` kosong berarti memakai SQLite lokal. Restart server setelah mengubahnya.
+
+## Deployment gratis (Render + Neon)
+
+Konfigurasi [render.yaml](render.yaml) menyiapkan Django di Render Free dan menggunakan PostgreSQL Neon Free. API Django tetap berjalan bersama aplikasi; Neon juga menyediakan Data API jika dibutuhkan. Paket gratis dapat berubah, dan Render menidurkan aplikasi setelah tidak ada trafik.
+
+1. Push repositori ke GitHub.
+2. Buat project PostgreSQL di [Neon](https://neon.com/). Salin **pooled connection string** untuk digunakan sebagai `DATABASE_URL`.
+3. Di [Render](https://render.com/), buat **Blueprint** dari repositori ini dan pilih `render.yaml`.
+4. Saat diminta, isi `DATABASE_URL` dengan connection string Neon. Isi `GROQ_API_KEY` bila fitur penjelasan AI ingin digunakan; `SECRET_KEY` dibuat otomatis.
+5. Setelah deploy selesai, buka URL `onrender.com`. Migrasi Django berjalan saat aplikasi mulai.
+
+Database SQLite lokal tidak ikut tersalin; riwayat prediksi di hosting dimulai kosong. Jangan menyimpan `DATABASE_URL` atau API key di GitHub. Di Render, aplikasi gratis bisa perlu sekitar satu menit untuk bangun setelah lama tidak dibuka; database Neon aktif kembali otomatis saat diakses.
 
 ## Cara Penggunaan
 
